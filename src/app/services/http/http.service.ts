@@ -16,7 +16,25 @@ export class HttpService {
       catchError(this.handleError)
     );
   }
+  getPatient(source: string) {
+    return this.http.get(source).pipe(
+      tap((res: any) => res),
+      catchError(this.handleError)
+    );
+  }
   addDoctorProf(source: string,req) {
+    return this.http.post(source,req).pipe(
+      tap((res: any) => res),
+      catchError(this.handleError)
+    );
+  };
+  deleteAppointment(source: string,req) {
+    return this.http.post(source,req).pipe(
+      tap((res: any) => res),
+      catchError(this.handleError)
+    );
+  };
+  addPatient(source: string,req) {
     return this.http.post(source,req).pipe(
       tap((res: any) => res),
       catchError(this.handleError)

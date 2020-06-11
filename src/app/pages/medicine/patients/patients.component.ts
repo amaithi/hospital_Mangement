@@ -11,6 +11,7 @@ import { IOption } from '../../../ui/interfaces/option';
 import { Content } from '../../../ui/interfaces/modal';
 import * as PatientsActions from '../../../store/actions/patients.actions';
 import { TCModalService } from '../../../ui/services/modal/modal.service';
+
 const API_URL = 'http://localhost:5001/api/';
 @Component({
   selector: 'page-patients',
@@ -89,9 +90,22 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
 
   // delete patient
   remove(id: string) {
-    this.store.dispatch(new PatientsActions.Delete(id));
+    // this.store.dispatch(new PatientsActions.Delete(id));
+    this.httpSv.updatePatient(API_URL+'patient-delete/',{_id:id}).subscribe(response => {
+      this.getData(API_URL+"patients", 'patients', 'setPatients');
+    });
+    
   }
-
+  profile(id: string) {
+    // this.store.dispatch(new PatientsActions.Delete(id));
+    this.httpSv.updatePatient(API_URL+'patient-delete/',{_id:id}).subscribe(response => {
+      this.getData(API_URL+"patients", 'patients', 'setPatients');
+    });
+    
+  }
+  // openNew(id: string){
+  //   this.router.navigate(['/component-one']);
+  // }
   // open modal window
   openModal<T>(body: Content<T>, header: Content<T> = null, footer: Content<T> = null, row: IPatient) {
     this.initPatientForm(row);
@@ -126,14 +140,15 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
   // init form
   initPatientForm(data: IPatient) {
     this.currentAvatar = data.img ? data.img : this.defaultAvatar;
-    this.patientId =data["_id"];
+    // this.patientId =data["_id"];
+    console.log(data);
     this.patientForm = this.fb.group({
       id: data.id,
       img: [this.currentAvatar],
       name: [data.name ? data.name : '', Validators.required],
       number: [data.number ? data.number : '', Validators.required],
       age: [data.age ? data.age : '', Validators.required],
-      lastVisit: [data.lastVisit ? data.lastVisit : '', Validators.required],
+      // lastVisit: [data.lastVisit ? data.lastVisit : '', Validators.required],
       gender: [data.gender ? data.gender.toLowerCase() : '', Validators.required],
       address: [data.address ? data.address : '', Validators.required],
       status: [data.status ? data.status.toLowerCase() : '', Validators.required]
@@ -143,12 +158,13 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
   // update patient
   updatePatient(form: FormGroup) {
     if (form.valid) {
-      var updatePatientReq = form.value;
-      updatePatientReq.id = this.patientId;
+      form.value.id = this.patientId;
+      form.value.img = this.currentAvatar;
       let newPatient: IPatient = form.value;
-      this.httpSv.updatePatient(API_URL+'patient-update/',updatePatientReq).subscribe(response => {
-        console.log(response)
+      this.httpSv.updatePatient(API_URL+'patient-update/',form.value).subscribe(response => {
+        this.getData(API_URL+"patients", 'patients', 'setPatients');
       });
+      console.log(newPatient);
       this.store.dispatch(new PatientsActions.Edit(newPatient));
       this.closeModal();
       this.patientForm.reset();

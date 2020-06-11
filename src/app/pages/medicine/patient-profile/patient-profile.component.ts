@@ -6,6 +6,7 @@ import { BasePageComponent } from '../../base-page';
 import { IAppState } from '../../../interfaces/app-state';
 import { HttpService } from '../../../services/http/http.service';
 import { IOption } from '../../../ui/interfaces/option';
+const API_URL = 'http://localhost:5001/api/';
 
 @Component({
   selector: 'page-patient-profile',
@@ -74,7 +75,9 @@ export class PagePatientProfileComponent extends BasePageComponent implements On
 
   ngOnInit() {
     super.ngOnInit();
-
+    this.httpSv.getPatient(API_URL+'patient-get/').subscribe(response => {
+      
+    });
     this.getData('assets/data/patient-info.json', 'patientInfo', 'loadedDetect');
     this.getData('assets/data/patient-timeline.json', 'patientTimeline');
     this.getData('assets/data/patient-billings.json', 'billings');

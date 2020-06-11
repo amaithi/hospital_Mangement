@@ -26,10 +26,11 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
+              "src/app/backend/public/doctor",
               {
                 "glob": "**/*",
                 "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
-                "output": "/assets/"
+                "output": ""
               }
             ],
             "styles": [

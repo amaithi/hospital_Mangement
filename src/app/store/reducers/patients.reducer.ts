@@ -13,6 +13,7 @@ export function patientsReducer(data: IPatient[] = [], action: Action) {
       data.forEach((patient: IPatient, index) => {
         if (patient.id === action.data.id) {
           data[index] = action.data;
+          // data = action.data;
         }
       });
 

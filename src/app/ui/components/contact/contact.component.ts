@@ -15,7 +15,6 @@ export class TCContactComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.userid = '../'+this.data.profileLink+'/'+this.data._id
-    console.log(this.data)
+    this.userid = '../'+this.data.profileLink+'/'+this.data._id;
   }
 }

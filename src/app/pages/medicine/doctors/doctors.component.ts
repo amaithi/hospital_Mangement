@@ -22,7 +22,8 @@ export class PageDoctorsComponent extends BasePageComponent implements OnInit, O
   currentAvatar: string | ArrayBuffer;
   defaultAvatar: string;
   specialists: string[];
-
+   filedata = new FormData();
+  newImage:any;
   constructor(
     store: Store<IAppState>,
     httpSv: HttpService,
@@ -97,30 +98,31 @@ export class PageDoctorsComponent extends BasePageComponent implements OnInit, O
     reader.onloadend = () => {
       this.currentAvatar = reader.result;
     };
-
+    this.newImage =  this.filedata;
     reader.readAsDataURL(file);
+    
   }
 
   // add new doctor
   addDoctor(form: FormGroup) {
     if (form.valid) {
       var addreq = form.value;
-      addreq.profileLink =  "doctor-profile"
+      addreq.imagefile =  this.newImage;
+      addreq.profileLink =  "doctor-profile";
+      addreq.img =  this.currentAvatar;
+      addreq.name = form.value.name;
+      addreq.lastName = form.value.lastName;
       this.httpSv.addDoctorProf(API_URL+'doctor-add/',addreq).subscribe(response => {
-        console.log(response)
-      });
-      delete form.value.lastName;
-      delete form.value.gender;
-
-      let newDoctor: IUser = form.value;
-
+      // delete form.value.gender;
+      addreq._id = response._id;
+      let newDoctor: IUser = addreq;
       newDoctor.img = this.currentAvatar;
-      newDoctor.name = `Dr. ${newDoctor.name}`;
+      newDoctor.name = `${newDoctor.name}`;
       newDoctor.profileLink = 'doctor-profile';
-
       this.doctors.unshift(newDoctor);
-
       this.closeModal();
+      });
+      
     }
   }
 

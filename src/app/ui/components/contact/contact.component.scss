@@ -28,6 +28,9 @@ $_sl-color-hover: accent-palette(500);
     border-top-right-radius: inherit;
     overflow: hidden;
   }
+  .address{
+    height: 30px;
+  }
   .info-box {
     padding: ($_module-rem * 2) ($_module-rem * 2) ($_module-rem * 3);
 

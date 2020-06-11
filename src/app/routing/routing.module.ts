@@ -68,6 +68,7 @@ const VERTICAL_ROUTES: Routes = [
   { path: 'doctor-profile/:id', component: PageDoctorProfileComponent },
   { path: 'doctor-profile', component: PageDoctorProfileComponent },
   { path: 'patients', component: PagePatientsComponent },
+  { path: 'patient-profile/:id', component: PagePatientProfileComponent },
   { path: 'patient-profile', component: PagePatientProfileComponent },
   { path: 'payments', component: PagePaymentsComponent },
   { path: 'appointments', component: PageAppointmentsComponent },

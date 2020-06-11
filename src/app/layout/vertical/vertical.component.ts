@@ -13,6 +13,7 @@ import { TCModalService } from '../../ui/services/modal/modal.service';
 import { IPatient } from '../../interfaces/patient';
 import * as PatientsActions from '../../store/actions/patients.actions';
 import * as SettingsActions from '../../store/actions/app-settings.actions';
+const API_URL = 'http://localhost:5001/api/';
 
 @Component({
   selector: 'vertical-layout',
@@ -105,12 +106,14 @@ export class VerticalLayoutComponent extends BaseLayoutComponent implements OnIn
   addPatient(form: FormGroup) {
     if (form.valid) {
       let newPatient: IPatient = form.value;
-
+      // patient-add
       newPatient.img = this.currentAvatar;
       newPatient.id = '23';
       newPatient.status = 'Pending';
       newPatient.lastVisit = '';
-
+      this.httpSv.addPatient(API_URL+'patient-add/',newPatient).subscribe(response => {
+        console.log(response)
+      });
       this.store.dispatch(new PatientsActions.Add(newPatient));
       this.closeModal();
       this.patientForm.reset();

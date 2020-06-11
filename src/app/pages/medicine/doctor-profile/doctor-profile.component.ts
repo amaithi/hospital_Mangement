@@ -114,7 +114,7 @@ export class PageDoctorProfileComponent extends BasePageComponent implements OnI
       lastName: [data.lastName],
       role: [data.role, Validators.required],
       address: [data.address, Validators.required],
-      gender: ['Male', Validators.required],
+      gender: [data.gender, Validators.required],
       social: new FormArray([])
     });
 
@@ -159,7 +159,7 @@ export class PageDoctorProfileComponent extends BasePageComponent implements OnI
     if (form.valid) {
       var saveReq = form.value;
       saveReq.id = this.currentId;
-      
+      saveReq.img = this.currentAvatar;
       this.httpSv.saveProf(API_URL+'doctor-update/',saveReq).subscribe(response => {
         console.log(response)
       });
@@ -173,12 +173,10 @@ export class PageDoctorProfileComponent extends BasePageComponent implements OnI
   onFileChanged(inputValue: any) {
     let file: File = inputValue.target.files[0];
     let reader: FileReader = new FileReader();
-
     reader.onloadend = () => {
       this.currentAvatar = reader.result;
       this.changes = true;
     };
-
     reader.readAsDataURL(file);
   }
 

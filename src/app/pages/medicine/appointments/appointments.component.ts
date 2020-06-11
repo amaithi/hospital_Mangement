@@ -102,11 +102,9 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
   onFileChanged(inputValue: any) {
     let file: File = inputValue.target.files[0];
     let reader: FileReader = new FileReader();
-
     reader.onloadend = () => {
       this.currentAvatar = reader.result;
     };
-
     reader.readAsDataURL(file);
   }
 
@@ -118,6 +116,10 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
   // remove appointment
   remove(tableRow: any) {
     this.appointments = this.appointments.filter(row => row !== tableRow);
+    this.httpSv.deleteAppointment(API_URL+'appointment-delete/',{_id:tableRow._id}).subscribe(response => {
+      console.log(response)
+    });
+
   }
 
 
@@ -126,7 +128,7 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
   // add new appointment
   addAppointment(form: FormGroup) {
     if (form.valid) {
-
+      form.value.img = this.currentAvatar;
       this.httpSv.addDoctorProf(API_URL+'appointment-update/',form.value).subscribe(response => {
         console.log(response)
       });
