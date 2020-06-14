@@ -5,9 +5,9 @@ module.exports = function validateRiderSignupInput(data) {
     data.username = !isEmpty(data.username) ? data.username : "";
     data.email = !isEmpty(data.email) ? data.email : "";
     data.password = !isEmpty(data.password) ? data.password : "";
-    data.cpassword = !isEmpty(data.cpassword) ? data.cpassword : "";
+    // data.cpassword = !isEmpty(data.cpassword) ? data.cpassword : "";
     if (Validator.isEmpty(data.username)) {
-        errors.username = "User Name field is required";
+        errors.username = " Name field is required";
     }
     if (Validator.isEmpty(data.email)) {
         errors.email = "Email field is required";
@@ -17,12 +17,12 @@ module.exports = function validateRiderSignupInput(data) {
     if (Validator.isEmpty(data.password)) {
         errors.password = "Password field is required";
     }
-    if (Validator.isEmpty(data.cpassword)) {
-        errors.cpassword = "Confirm Password field is required";
-    }
-    if(data.cpassword != data.password){
-        errors.cpassword ="Confirm password not matched with password";
-    }
+    // if (Validator.isEmpty(data.cpassword)) {
+    //     errors.cpassword = "Confirm Password field is required";
+    // }
+    // if(data.cpassword != data.password){
+    //     errors.cpassword ="Confirm password not matched with password";
+    // }
     return {
         errors,
         isValid: isEmpty(errors)

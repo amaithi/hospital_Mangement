@@ -22,6 +22,15 @@
         <span class="nowrap" [tcColor]="'#a5a5a5'">{{ value }}</span>
       </ng-template>
     </tc-table-col>
+    ldjglfdg
+    <div class="form-group">
+      <div class='input-group date' id='datetimepicker1'>
+          <input type='text' class="form-control" />
+          <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+      </div>
+  </div>
     <tc-table-col [columnTitle]="'Visit time'" [columnName]="'fromTo'" [enableSorting]="true">
       <ng-template #tableTDTemplate let-value>
         <span class="nowrap" [tcColor]="'#a5a5a5'">{{ value }}</span>
@@ -101,25 +110,10 @@
         <tc-input [placeholder]="'Email'" formControlName="email"></tc-input>
       </tc-form-group>
 
-      <!-- <tc-form-group>
-        <tc-input [placeholder]="'Date'" formControlName="date"></tc-input>
-      </tc-form-group> -->
       <tc-form-group>
-        <!-- <igx-date-picker #datePicker [value]="date">
-          <ng-template igxDatePickerTemplate let-openDialog="openDialog" let-value="value" let-displayData="displayData">
-              <igx-input-group (click)="openDialog()">
-                  <igx-prefix>
-                      <igx-icon>favorite</igx-icon>
-                  </igx-prefix>
-                  <label igxLabel>My Custom Date</label>
-                  <input igxInput [value]="displayData" />
-                  <igx-suffix>
-                      <igx-icon>today</igx-icon>
-                  </igx-suffix>
-              </igx-input-group>
-              <label>{{value}}</label>
-          </ng-template>
-      </igx-date-picker> -->
+        <tc-form-group>
+          <nz-date-picker formControlName="date" (ngModelChange)="onChange($event)"></nz-date-picker>
+        </tc-form-group>
         
       </tc-form-group>
 

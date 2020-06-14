@@ -33,7 +33,7 @@
       </li>
     </ul>
 
-    <div class="menu-footer" *ngIf="notifications && notifications.length">
+    <!-- <div class="menu-footer" *ngIf="notifications && notifications.length">
       <a
         tc-button
         href="#"
@@ -44,28 +44,28 @@
       >
         View all notifications
       </a>
-    </div>
+    </div> -->
   </tc-dropdown-content>
 </tc-dropdown>
 
 <tc-dropdown class="item" [close]="closeDropdown">
   <tc-dropdown-button>
     <div class="d-flex align-items-center">
-      <tc-avatar [src]="'/assets/content/user-400-1.jpg'" class="mr-1"></tc-avatar>
+     {{profileName}} <tc-avatar [src]="'/assets/content/user-400-1.jpg'" class="mr-1"></tc-avatar>
       <i class="icofont-simple-down"></i>
     </div>
   </tc-dropdown-button>
 
   <tc-dropdown-content [align]="'right'" [animation]="'fadeInUp'" [offset]="[10, 0]" [width]="180">
     <ul class="list">
-      <li>
+      <!-- <li>
         <a href="#" (click)="goTo($event, 'edit-account')" class="align-items-center">
           <span class="icon icofont-ui-home"></span>
           Edit account
         </a>
-      </li>
+      </li> -->
 
-      <li>
+      <!-- <li>
         <a href="#" (click)="goTo($event, 'user-profile')" class="align-items-center">
           <span class="icon icofont-ui-user"></span>
           User profile
@@ -77,17 +77,17 @@
           <span class="icon icofont-ui-calendar"></span>
           Calendar
         </a>
-      </li>
+      </li> -->
 
-      <li>
+      <!-- <li>
         <a href="#" (click)="goTo($event, 'settings')" class="align-items-center">
           <span class="icon icofont-ui-settings"></span>
           Settings
         </a>
-      </li>
+      </li> -->
 
       <li>
-        <a href="#" (click)="goTo($event, 'sign-in', '../public/')" class="align-items-center">
+        <a  (click)="logout()" class="align-items-center">
           <span class="icon icofont-logout"></span>
           Log Out
         </a>

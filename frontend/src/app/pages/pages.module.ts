@@ -72,6 +72,7 @@ import { Page500Component } from './apps/sessions/page-500';
 import { PageDatepickersComponent } from './ui/components/datepickers';
 import { PageAntTableComponent } from './ui/tables/ant-table';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+// import { NewpayComponent } from './medicine/newpay/newpay.component';
 
 @NgModule({
   imports: [
@@ -152,7 +153,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     Page404Component,
     Page500Component,
     PageDatepickersComponent,
-    PageAntTableComponent
+    PageAntTableComponent,
+    // NewpayComponent
   ],
   exports: [ ],
   entryComponents: [ ]

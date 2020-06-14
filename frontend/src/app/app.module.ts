@@ -16,11 +16,14 @@ import { PagesModule } from './pages/pages.module';
 import { pageDataReducer } from './store/reducers/page-data.reducer';
 import { appSettingsReducer } from './store/reducers/app-settings.reducer';
 import { patientsReducer } from './store/reducers/patients.reducer';
-
-
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { DatepickerFormatsExampleComponent } from './datepicker-formats-example/datepicker-formats-example.component';
+// import { NewpaymentComponent } from './newpayment/newpayment.component';
+ import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -36,12 +39,16 @@ import { patientsReducer } from './store/reducers/patients.reducer';
     RoutingModule,
     LayoutModule,
     UIModule,
-    PagesModule
+    PagesModule,
+    BsDatepickerModule.forRoot(),
+     ToastrModule.forRoot()
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: NZ_I18N, useValue: en_US }
   ],
+  
+  schemas: [  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

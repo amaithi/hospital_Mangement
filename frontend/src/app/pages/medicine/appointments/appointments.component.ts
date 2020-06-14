@@ -24,7 +24,9 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
   currentAvatar: string | ArrayBuffer;
   defaultAvatar: string;
   doctors: IUser[];
- 
+  dateRange: Date[];
+  size: string;
+  dateMode: string;
 
   constructor(
     store: Store<IAppState>,
@@ -46,6 +48,10 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
         }
       ]
     };
+    this.date = new Date();
+    this.dateRange = [];
+    this.size = 'default';
+    this.dateMode = 'date';
     this.appointments = [];
     this.doctors = [];
     this.defaultAvatar = 'assets/content/anonymous-400.jpg';
@@ -107,7 +113,17 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
     };
     reader.readAsDataURL(file);
   }
+  onChange(result: Date): void { }
 
+  onOk(result: Date): void { }
+
+  handleDateOpenChange(open: boolean): void {
+    if (open) {
+      this.dateMode = 'date';
+    }
+  }
+
+  // handleDatePanelChange(mode: string): void { }
   // edit appointment
   edit(row: any) {
     this.openModal(this.modalBody, 'Add appointment', this.modalFooter, row);

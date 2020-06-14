@@ -11,6 +11,7 @@ const doctors = require('./routes/api/doctors');
 const patients = require('./routes/api/patients');
 const doctorInfo = require('./routes/api/doctorInfo');
 const appointments = require('./routes/api/appointments');
+const payments = require('./routes/api/payments');
 var http            = require("http");
 var https            = require("http");
 // require('../config/passport')(passport);
@@ -56,12 +57,12 @@ app.use(express.static('public'));
 app.use('/api', doctors);
 app.use('/api', doctorInfo);
 app.use('/api', patients);
-
+app.use('/api', payments)
 app.use('/api', appointments);
 // app.use('/api', contactus);
 // app.use('/api', member);
 // app.use('/api', rider);
-// app.use('/api', ridesignup);
+app.use('/api', ridesignup);
 
 
 //frontend

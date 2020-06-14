@@ -163,7 +163,7 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
       form.value._id=this.recordId ;
       form.value.img = this.currentAvatar;
       let newPatient: IPatient = form.value;
-      this.httpSv.updatePatient(API_URL+'patient-update/',form.value).subscribe(response => {
+      this.httpSv.updatePatient(API_URL+'patient-update',form.value).subscribe(response => {
         this.getData(API_URL+"patients", 'patients', 'setPatients');
       });
       console.log(newPatient);

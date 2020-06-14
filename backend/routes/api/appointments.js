@@ -19,12 +19,21 @@ router.get('/test1', (req, res) => {
 // });
 router.get('/listAppointment', (req, res) => {
     appointments.find({}).then(user => {
-        if (user) {
+        
             return res.status(200).send(user);
             console.log(user, 'uesrezzzzzzz');
-        }
+        
     });
 });
+
+router.get('/lastappointment', (req, res) => {
+  appointments.find({}).sort({_id:-1}).limit(10,function(err,docs){
+     return res.status(200).send(user);
+
+
+  })
+});
+
 router.get("/doctor-profile/:id", (req, res) => {
     var id = req.params.id;
     doctors.findById(id).then((result) => {

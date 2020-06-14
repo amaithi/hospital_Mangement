@@ -1,6 +1,6 @@
 <form [formGroup]="registerForm" novalidate>
   <tc-form-group>
-    <tc-input [placeholder]="'Name'" formControlName="name"></tc-input>
+    <tc-input [placeholder]="'Name'" formControlName="username"></tc-input>
   </tc-form-group>
 
   <tc-form-group>
@@ -8,7 +8,7 @@
   </tc-form-group>
 
   <tc-form-group>
-    <tc-input [placeholder]="'Password'" [type]="'password'" formControlName="pass"></tc-input>
+    <tc-input [placeholder]="'Password'" [type]="'password'" formControlName="password"></tc-input>
   </tc-form-group>
 
   <tc-form-group>
@@ -16,7 +16,7 @@
   </tc-form-group>
 
   <div class="actions justify-content-between">
-    <button tc-button [view]="'accent'" [beforeIcon]="'icofont-plus'">
+    <button tc-button [view]="'accent'" (click)="signup()" [beforeIcon]="'icofont-plus'">
       Register
     </button>
   </div>

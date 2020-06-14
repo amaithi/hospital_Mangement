@@ -1,23 +1,5 @@
 <div class="row">
-  <div class="col col-12 col-md-6 col-xl-3">
-    <tc-card [tcBgColor]="'#fbfbfb'" class="animated fadeInUp delay-01s">
-      <div class="row align-items-center">
-        <div class="col col-5">
-          <tc-icon
-            [tcColor]="'rgba(51,108,251,0.5)'"
-            [tcFontSize]="48"
-            [iconClass]="'icofont-first-aid-alt'"
-            [padding]="0"
-          ></tc-icon>
-        </div>
 
-        <div class="col col-7">
-          <h6 class="mt-0 mb-1">Appointments</h6>
-          <div class="count" [tcFontSize]="20" [tcColor]="'#336cfb'">213</div>
-        </div>
-      </div>
-    </tc-card>
-  </div>
 
   <div class="col col-12 col-md-6 col-xl-3">
     <tc-card [tcBgColor]="'#fbfbfb'" class="animated fadeInUp delay-02s">
@@ -32,8 +14,27 @@
         </div>
 
         <div class="col col-7">
-          <h6 class="mt-0 mb-1 nowrap">New patients</h6>
-          <div class="count" [tcFontSize]="20" [tcColor]="'#336cfb'">104</div>
+          <h6 class="mt-0 mb-1 nowrap">Total patients</h6>
+          <div class="count" [tcFontSize]="20" [tcColor]="'#336cfb'">{{totalpatient}}</div>
+        </div>
+      </div>
+    </tc-card>
+  </div>
+  <div class="col col-12 col-md-6 col-xl-3">
+    <tc-card [tcBgColor]="'#fbfbfb'" class="animated fadeInUp delay-01s">
+      <div class="row align-items-center">
+        <div class="col col-5">
+          <tc-icon
+            [tcColor]="'rgba(51,108,251,0.5)'"
+            [tcFontSize]="48"
+            [iconClass]="'icofont-first-aid-alt'"
+            [padding]="0"
+          ></tc-icon>
+        </div>
+       
+        <div class="col col-7">
+          <h6 class="mt-0 mb-1">Pending Patients</h6>
+          <div class="count" [tcFontSize]="20" [tcColor]="'#336cfb'">{{patientpending}}</div>
         </div>
       </div>
     </tc-card>
@@ -52,8 +53,8 @@
         </div>
 
         <div class="col col-7">
-          <h6 class="mt-0 mb-1">Operations</h6>
-          <div class="count" [tcFontSize]="20" [tcColor]="'#336cfb'">23</div>
+          <h6 class="mt-0 mb-1">Closed Patients</h6>
+          <div class="count" [tcFontSize]="20" [tcColor]="'#336cfb'">{{patientapprove}}</div>
         </div>
       </div>
     </tc-card>
@@ -73,7 +74,7 @@
 
         <div class="col col-7">
           <h6 class="mt-0 mb-1 nowrap">Hospital Earning</h6>
-          <div class="count" [tcFontSize]="20" [tcColor]="'#336cfb'">$5238</div>
+          <div class="count" [tcFontSize]="20" [tcColor]="'#336cfb'">${{totalrevenue}}</div>
         </div>
       </div>
     </tc-card>
@@ -123,7 +124,7 @@
 </div>
 
 <tc-card [title]="'Last appointments'" class="mb-0">
-  <tc-table [rows]="appointments" [hovered]="true" [pagination]="true">
+  <tc-table [rows]="lastappoint" [hovered]="true" [pagination]="true">
     <tc-table-col [columnTitle]="'Photo'" [columnName]="'img'">
       <ng-template #tableTDTemplate let-value>
         <tc-avatar [src]="value"></tc-avatar>

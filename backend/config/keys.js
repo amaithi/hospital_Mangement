@@ -17,7 +17,7 @@ module.exports = {
     
     //siteName : "GenesisOne",
 
-    // frontUrl : "http://172.104.166.247/",
+     frontUrl : "http://localhost:4200/#/public/sign-in/",
     // frontUrl : "http://18.218.61.140/",
     //frontUrl : "https://genesisonetoken.com/",
 
@@ -27,11 +27,11 @@ module.exports = {
     infura     :  "https://ropsten.infura.io/v3/1f45bf089b7f420e9581960cc2cc50a3",
 
 
-    email      :  "alwinmatthew@britisheducationonline.org",
+    email      :  "amaithisingam@gmail.com",
     password   : "13071997",
     host       :  "smtp.gmail.com",
     port       :  "587",
-    fromName   :  "GenesisOne",
+    fromName   :  "Prodoc",
     serverName :  "gmail",
     // TWILIO_ACCOUT_SID : 'AC18c324f25292b29900f515237543746e', //local
     // TWILIO_AUTH_TOKEN : '036c4e16d90f86c4d49b0bc77f85a984',

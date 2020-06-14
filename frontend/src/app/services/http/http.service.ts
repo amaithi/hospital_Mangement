@@ -22,7 +22,49 @@ export class HttpService {
       catchError(this.handleError)
     );
   }
+  lastappintment(source: string) {
+    return this.http.get(source).pipe(
+      tap((res: any) => res),
+      catchError(this.handleError)
+    );
+  }
+  pendingPatient(source: string) {
+    return this.http.get(source).pipe(
+      tap((res: any) => res),
+      catchError(this.handleError)
+    );
+  }
+  approvepatient(source: string) {
+    return this.http.get(source).pipe(
+      tap((res: any) => res),
+      catchError(this.handleError)
+    );
+  }
+  getpayment(source: string) {
+    return this.http.get(source).pipe(
+      tap((res: any) => res),
+      catchError(this.handleError)
+    );
+  }
+  addPayment(source: string,req) {
+    return this.http.post(source,req).pipe(
+      tap((res: any) => res),
+      catchError(this.handleError)
+    );
+  };
   addDoctorProf(source: string,req) {
+    return this.http.post(source,req).pipe(
+      tap((res: any) => res),
+      catchError(this.handleError)
+    );
+  };
+  signupAPI(source: string,req) {
+    return this.http.post(source,req).pipe(
+      tap((res: any) => res),
+      catchError(this.handleError)
+    );
+  };
+  postCall(source: string,req) {
     return this.http.post(source,req).pipe(
       tap((res: any) => res),
       catchError(this.handleError)

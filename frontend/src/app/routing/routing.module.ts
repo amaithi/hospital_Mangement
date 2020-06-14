@@ -60,11 +60,9 @@ import { Page404Component } from '../pages/apps/sessions/page-404';
 import { Page500Component } from '../pages/apps/sessions/page-500';
 import { PageDatepickersComponent } from '../pages/ui/components/datepickers';
 import { PageAntTableComponent } from '../pages/ui/tables/ant-table';
-
 const VERTICAL_ROUTES: Routes = [
   { path: 'default-dashboard', component: PageDashboardComponent },
   { path: 'doctors', component: PageDoctorsComponent },
-  
   { path: 'doctor-profile/:id', component: PageDoctorProfileComponent },
   { path: 'doctor-profile', component: PageDoctorProfileComponent },
   { path: 'patients', component: PagePatientsComponent },
@@ -122,6 +120,7 @@ const VERTICAL_ROUTES: Routes = [
 
 const PUBLIC_ROUTES: Routes = [
   { path: 'sign-in', component: PageSignInComponent },
+  { path: 'sign-in/:id', component: PageSignInComponent },
   { path: 'sign-up', component: PageSignUpComponent },
   { path: 'page-404', component: Page404Component },
   { path: 'page-500', component: Page500Component },

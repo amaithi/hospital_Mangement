@@ -5,7 +5,8 @@ import { EChartOption } from 'echarts';
 import { BasePageComponent } from '../../base-page';
 import { IAppState } from '../../../interfaces/app-state';
 import { HttpService } from '../../../services/http/http.service';
-
+import {ActivatedRoute, Router} from "@angular/router";
+const API_URL = 'http://localhost:5001/api/';
 @Component({
   selector: 'page-dashboard',
   templateUrl: './dashboard.component.html',
@@ -22,10 +23,16 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
   piePatternSrc: string;
   piePatternImg: any;
   pieStyle: any;
-
+  totalrevenue:any;
+  totalpatient:any;
+  patientpending:any;
+  patientapprove:any;
+  lastappoint:any;
+  profileName:any;
   constructor(
     store: Store<IAppState>,
-    httpSv: HttpService
+    httpSv: HttpService,
+    private router: Router,
   ) {
     super(store, httpSv);
 
@@ -61,9 +68,31 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
 
   ngOnInit() {
     super.ngOnInit();
-
-    this.getData('assets/data/last-appointments.json', 'appointments', 'setLoaded');
-
+    var data = localStorage.getItem('user');
+    if(data ==null){
+      this.router.navigateByUrl('/public/sign-in');
+    }
+    var parseData = JSON.parse(data);
+    this.profileName =parseData.username;
+    //  this.getData(API_URL+'listAppointment', 'appointments', 'setLoaded');
+   
+    this.getData(API_URL+'payments-get', 'payments', 'setLoaded');
+    this.httpSv.lastappintment(API_URL+'listAppointment').subscribe(response => {
+      this.lastappoint= response.slice(Math.max(response.length - 10, 0));;
+    });
+    this.httpSv.getPatient(API_URL+'patient-get/').subscribe(response => {
+      this.totalpatient= response.length;
+    });
+    this.httpSv.pendingPatient(API_URL+'patients-status-pending/').subscribe(response => {
+      this.patientpending= response.length;
+    });
+    this.httpSv.approvepatient(API_URL+'patients-status-approved/').subscribe(response => {
+      this.patientapprove= response.length;
+    });
+    
+    this.httpSv.getpayment(API_URL+'payments-get/').subscribe(response => {
+      this.totalrevenue = response.reduce(function(a,b){return Number(a.total)+Number(b.total)})
+    });
     this.setHSOptions();
     this.setPAOptions();
     this.setPGOptions();

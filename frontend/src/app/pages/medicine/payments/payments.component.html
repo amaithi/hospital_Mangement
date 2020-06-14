@@ -48,7 +48,7 @@
 </div>
 
 <!-- Modal window -->
-<ng-container>
+<!-- <ng-container> -->
   <ng-template #modalBody>
     <form [formGroup]="paymentForm" novalidate>
       <tc-form-group>
@@ -62,11 +62,9 @@
       <tc-form-group>
         <tc-autocomplete [placeholder]="'Doctor'" [data]="doctors" [key]="'name'" formControlName="doctor"></tc-autocomplete>
       </tc-form-group>
-
       <tc-form-group>
-        <tc-input [placeholder]="'Date'" formControlName="billDate"></tc-input>
+        <nz-date-picker  formControlName="date" (ngModelChange)="onChange($event)"></nz-date-picker>
       </tc-form-group>
-
       <tc-form-group>
         <tc-input [placeholder]="'Charges'" formControlName="charges"></tc-input>
       </tc-form-group>
@@ -74,7 +72,9 @@
       <tc-form-group>
         <tc-input [placeholder]="'Tax'" formControlName="tax"></tc-input>
       </tc-form-group>
-
+      <tc-form-group>
+      </tc-form-group>
+     
       <tc-form-group>
         <tc-input [placeholder]="'Discount'" formControlName="discount"></tc-input>
       </tc-form-group>
@@ -93,5 +93,5 @@
       </button>
     </div>
   </ng-template>
-</ng-container>
+<!-- </ng-container> -->
 <!-- end Modal window -->

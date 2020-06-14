@@ -120,14 +120,14 @@
       background-color: accent-palette(50);
     }
   }
-  @media #{$max767} {
-    .fc-left,
-    .fc-right,
-    .fc-center {
-      display: flex;
-      float: none;
-      justify-content: center;
-      margin-bottom: $module-rem;
-    }
-  }
+  // @media #{$max767} {
+  //   .fc-left,
+  //   .fc-right,
+  //   .fc-center {
+  //     display: flex;
+  //     float: none;
+  //     justify-content: center;
+  //     margin-bottom: $module-rem;
+  //   }
+  // }
 }

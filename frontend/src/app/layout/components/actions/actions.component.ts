@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
+import {ActivatedRoute, Router} from "@angular/router";
 import { HttpService } from '../../../services/http/http.service';
 
 @Component({
@@ -14,10 +14,11 @@ export class ActionsComponent implements OnInit {
   files: any[];
   closeDropdown: EventEmitter<boolean>;
   @Input() layout: string;
+  profileName:any;
 
   constructor(
     private httpSv: HttpService,
-    private router: Router
+    private router: Router,
   ) {
     this.notifications = [];
     this.messages = [];
@@ -27,6 +28,12 @@ export class ActionsComponent implements OnInit {
   }
 
   ngOnInit() {
+    var data = localStorage.getItem('user');
+    if(data ==null){
+      this.router.navigateByUrl('/public/sign-in');
+    }
+    var parseData = JSON.parse(data);
+    this.profileName =parseData.name;
     this.getData('assets/data/navbar-notifications.json', 'notifications');
     this.getData('assets/data/navbar-messages.json', 'messages');
     this.getData('assets/data/navbar-files.json', 'files');
@@ -42,7 +49,10 @@ export class ActionsComponent implements OnInit {
       }
     );
   }
-
+  logout(){
+    localStorage.removeItem('user');
+    this.router.navigateByUrl('/public/sign-in');
+  }
   onCloseDropdown() {
     this.closeDropdown.emit(true);
   }

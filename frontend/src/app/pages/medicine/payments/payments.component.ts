@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit,ChangeDetectionStrategy } from '@angular/core';
 import { BasePageComponent } from '../../base-page';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../../interfaces/app-state';
@@ -7,7 +7,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Content } from '../../../ui/interfaces/modal';
 import { TCModalService } from '../../../ui/services/modal/modal.service';
 import { IUser } from '../../../ui/interfaces/user';
-
+const API_URL = 'http://localhost:5001/api/';
+// import { IMyOptions } from 'ng-uikit-pro-standard';
+import * as $ from 'jquery'; 
 @Component({
   selector: 'page-payments',
   templateUrl: './payments.component.html',
@@ -17,7 +19,10 @@ export class PagePaymentsComponent extends BasePageComponent implements OnInit, 
   payments: any[];
   paymentForm: FormGroup;
   doctors: IUser[];
-
+  date: Date;
+  dateRange: Date[];
+  size: string;
+  dateMode: string;
   constructor(
     store: Store<IAppState>,
     httpSv: HttpService,
@@ -40,12 +45,33 @@ export class PagePaymentsComponent extends BasePageComponent implements OnInit, 
     };
     this.payments = [];
     this.doctors = [];
+    this.date = new Date();
+    this.dateRange = [];
+    this.size = 'default';
+    this.dateMode = 'date';
+  }
+  // public myDatePickerOptions: IMyOptions = {
+  //   // Your options
+  //   };
+
+  // $(function () {
+    
+// });
+onChange(result: Date): void { }
+
+  onOk(result: Date): void { }
+
+  handleDateOpenChange(open: boolean): void {
+    if (open) {
+      this.dateMode = 'date';
+    }
   }
 
+  handleDatePanelChange(mode: string): void { }
   ngOnInit() {
     super.ngOnInit();
 
-    this.getData('assets/data/payments.json', 'payments', 'setLoaded');
+    this.getData(API_URL+'payments-get', 'payments', 'setLoaded');
     this.getData('assets/data/doctors.json', 'doctors');
   }
 
@@ -81,18 +107,22 @@ export class PagePaymentsComponent extends BasePageComponent implements OnInit, 
       charges: ['', Validators.required],
       tax: ['', Validators.required],
       discount: ['', Validators.required],
-      total: ['', Validators.required]
+      total: ['', Validators.required],
+      date: ['', Validators.required]
     });
   }
 
   // add new payment
   addPayment(form: FormGroup) {
     if (form.valid) {
-      this.payments.unshift(form.value);
-      let newTableData = JSON.parse(JSON.stringify(this.payments));
-
-      this.payments = newTableData;
-      this.closeModal();
+      this.httpSv.addPayment(API_URL+'payments-add/',form.valid).subscribe(response => {
+        this.payments.unshift(form.value);
+        let newTableData = JSON.parse(JSON.stringify(this.payments));
+  
+        this.payments = newTableData;
+        this.closeModal();
+      });
+     
     }
   }
 }

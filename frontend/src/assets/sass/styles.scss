@@ -7,3 +7,15 @@
 @import './full-calendar';
 @import './ng-zorro-custom';
 @import './helpers';
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.cdk-overlay-container{ z-index: 20000 !important; }
+.cdk-overlay-pane{
+    z-index: 20000 !important;
+}
+
+
+
+// .ant-calendar-panel{
+//     background:red;
+// }
