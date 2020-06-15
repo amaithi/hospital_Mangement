@@ -19,10 +19,10 @@
     </tc-table-col>
     <tc-table-col [columnTitle]="'Date'" [columnName]="'date'" [enableSorting]="true">
       <ng-template #tableTDTemplate let-value>
-        <span class="nowrap" [tcColor]="'#a5a5a5'">{{ value }}</span>
+        <span class="nowrap" [tcColor]="'#a5a5a5'">{{ value}}</span>
       </ng-template>
     </tc-table-col>
-    ldjglfdg
+    
     <div class="form-group">
       <div class='input-group date' id='datetimepicker1'>
           <input type='text' class="form-control" />
@@ -118,19 +118,37 @@
       </tc-form-group>
 
       <div class="row">
-        <div class="col col-md-6">
-          <tc-form-group>
-            <tc-input [placeholder]="'Time from'" formControlName="from"></tc-input>
-          </tc-form-group>
+        <div class="col-12 col-md-6">
+            <tc-form-group>
+              <nz-date-picker
+                nzShowTime
+                nzFormat="HH:mm"
+                nzPlaceHolder="Select Start Time"
+                ngModel
+                (ngModelChange)="onChange($event)"
+                (nzOnOk)="onOk($event)"
+                formControlName="from"
+              ></nz-date-picker>
+            </tc-form-group>
         </div>
-
-        <div class="col col-md-6">
+        <div class="col-12 col-md-6">
           <tc-form-group>
-            <tc-input [placeholder]="'Time to'" formControlName="to"></tc-input>
+            <nz-date-picker
+              nzShowTime
+              nzFormat="HH:mm"
+              nzPlaceHolder="Select End Time"
+              ngModel
+              (ngModelChange)="onChange($event)"
+              (nzOnOk)="onOk($event)"
+              formControlName="to"
+            ></nz-date-picker>
           </tc-form-group>
-        </div>
       </div>
-
+      </div>
+      <div class="row">
+        
+      </div>
+      
       <tc-form-group>
         <tc-input [placeholder]="'Number'" formControlName="number"></tc-input>
       </tc-form-group>

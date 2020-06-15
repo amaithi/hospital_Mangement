@@ -23,12 +23,17 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
   piePatternSrc: string;
   piePatternImg: any;
   pieStyle: any;
-  totalrevenue:any;
-  totalpatient:any;
-  patientpending:any;
-  patientapprove:any;
-  lastappoint:any;
-  profileName:any;
+  totalrevenue: any;
+  totalpatient: any;
+  patientpending: any;
+  patientapprove: any;
+  lastappoint:  any;
+  profileName:  any; 
+  pievalue1:  any;
+  pievalue2:  any;
+  pievalue3:  any;
+  pievalue4:  any;
+  pievalue5:  any;
   constructor(
     store: Store<IAppState>,
     httpSv: HttpService,
@@ -81,7 +86,14 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
       this.lastappoint= response.slice(Math.max(response.length - 10, 0));;
     });
     this.httpSv.getPatient(API_URL+'patient-get/').subscribe(response => {
+      this.pievalue1 = response.filter(function(val,key){return (val.age<10 && 0<val.age )}).length;
+      this.pievalue2 = response.filter(function(val,key){return (val.age<20 && 10<val.age )}).length;
+      this.pievalue3 = response.filter(function(val,key){return (val.age<30 && 20<val.age )}).length;
+      this.pievalue4 = response.filter(function(val,key){return (val.age<40 && 30<val.age )}).length;
+      this.pievalue5 = response.filter(function(val,key){return ( 40<val.age )}).length;
       this.totalpatient= response.length;
+      this.setPGOptions(response.filter(function(val,key){return (val.gender == 'male' )}).length,response.filter(function(val,key){return (val.gender == 'female' )}).length);
+      this.setPAOptions(this.pievalue1,this.pievalue2,this.pievalue3,this.pievalue4,this.pievalue5);
     });
     this.httpSv.pendingPatient(API_URL+'patients-status-pending/').subscribe(response => {
       this.patientpending= response.length;
@@ -93,9 +105,8 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
     this.httpSv.getpayment(API_URL+'payments-get/').subscribe(response => {
       this.totalrevenue = response.reduce(function(a,b){return Number(a.total)+Number(b.total)})
     });
+    
     this.setHSOptions();
-    this.setPAOptions();
-    this.setPGOptions();
     this.setDOptions();
     this.setPIOptions();
     this.setHEOptions();
@@ -190,7 +201,9 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
     };
   }
 
-  setPAOptions() {
+  setPAOptions(a,b,c,d,e) {
+    console.log(a);
+    console.log(b)
     this.paOptions = {
       grid: {
         left: 0,
@@ -227,18 +240,18 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
           }
         },
         data:[
-          { value: 347, name: '0-10' },
-          { value: 310, name: '10-20' },
-          { value: 234, name: '20-30' },
-          { value: 195, name: '30-40' },
-          { value: 670, name: '40+' }
+          { value: a, name: '0-10' },
+          { value: b, name: '10-20' },
+          { value: c, name: '20-30' },
+          { value: d, name: '30-40' },
+          { value: e, name: '40+' }
         ],
         itemStyle: this.pieStyle
       }]
     };
   }
 
-  setPGOptions() {
+  setPGOptions(a,b) {
     this.pgOptions = {
       grid: {
         left: 0,
@@ -275,8 +288,8 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
           }
         },
         data:[
-          { value: 154, name: 'Female' },
-          { value: 173, name: 'Male' }
+          { value: a, name: 'Female' },
+          { value: b, name: 'Male' }
         ],
         itemStyle: this.pieStyle
       }]

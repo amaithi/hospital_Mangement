@@ -8,6 +8,7 @@ import { TCModalService } from '../../../ui/services/modal/modal.service';
 import { IUser } from '../../../ui/interfaces/user';
 const API_URL = 'http://localhost:5001/api/';
 import { IgxDatePickerComponent } from 'igniteui-angular';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'page-appointments',
   templateUrl: './appointments.component.html',
@@ -32,7 +33,8 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
     store: Store<IAppState>,
     httpSv: HttpService,
     private modal: TCModalService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private datePipe: DatePipe
   ) {
     super(store, httpSv);
 
@@ -51,7 +53,7 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
     this.date = new Date();
     this.dateRange = [];
     this.size = 'default';
-    this.dateMode = 'date';
+    this.dateMode = 'time';
     this.appointments = [];
     this.doctors = [];
     this.defaultAvatar = 'assets/content/anonymous-400.jpg';
@@ -119,7 +121,7 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
 
   handleDateOpenChange(open: boolean): void {
     if (open) {
-      this.dateMode = 'date';
+      this.dateMode = 'time';
     }
   }
 
@@ -145,6 +147,9 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
   addAppointment(form: FormGroup) {
     if (form.valid) {
       form.value.img = this.currentAvatar;
+      form.value.from = this.datePipe.transform(form.value.from, 'hh:mm');
+      form.value.to =this.datePipe.transform(form.value.to, 'hh:mm');
+      form.value.date = this.datePipe.transform(form.value.date, 'dd MMM yyyy')
       this.httpSv.addDoctorProf(API_URL+'appointment-update/',form.value).subscribe(response => {
         console.log(response)
       });

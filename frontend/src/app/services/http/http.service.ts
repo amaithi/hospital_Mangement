@@ -94,6 +94,12 @@ export class HttpService {
       catchError(this.handleError)
     );
   }
+  profileupdate(source: string,req) {
+    return this.http.post(source,req).pipe(
+      tap((res: any) => res),
+      catchError(this.handleError)
+    );
+  }
   private handleError(error: any) {
     return observableThrowError(error.error || 'Server error');
   }

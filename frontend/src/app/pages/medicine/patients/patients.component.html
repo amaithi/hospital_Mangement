@@ -49,7 +49,8 @@
           <a
             href="#"
             tc-button
-            [routerLink]="['../', 'patient-profile']"
+            (click)="redirectProfile(row._id)"
+          
             [afterIcon]="'icofont-external-link'"
             [square]="true"
             [tcShape]="500"
@@ -73,7 +74,7 @@
             [square]="true"
             [tcShape]="500"
             [size]="'sm'"
-            (click)="remove(row.id)"
+            (click)="remove(row._id)"
           ></button>
         </div>
       </ng-template>

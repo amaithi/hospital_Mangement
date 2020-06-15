@@ -23,7 +23,7 @@ export class PagePatientProfileComponent extends BasePageComponent implements On
   defaultAvatar: string;
   changes: boolean;
   billings: any[];
-
+  patientDataid :any;
   constructor(
     store: Store<IAppState>,
     httpSv: HttpService,
@@ -96,6 +96,8 @@ export class PagePatientProfileComponent extends BasePageComponent implements On
 
   // init form
   initPatientForm(data: any) {
+    console.log(data.status)
+    this.patientDataid = data._id;
     this.patientForm = this.formBuilder.group({
       img: [this.currentAvatar],
       name: [data.name, Validators.required],
@@ -119,6 +121,9 @@ export class PagePatientProfileComponent extends BasePageComponent implements On
     if (form.valid) {
       this.patientInfo = form.value;
       this.changes = false;
+      this.httpSv.profileupdate(API_URL+'patient-update/',form.value).subscribe(response => {
+        console.log(response);
+      });
     }
   }
 

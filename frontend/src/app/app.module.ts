@@ -20,6 +20,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { DatepickerFormatsExampleComponent } from './datepicker-formats-example/datepicker-formats-example.component';
 // import { NewpaymentComponent } from './newpayment/newpayment.component';
  import { ToastrModule } from 'ngx-toastr';
+ import { DatePipe } from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,7 +46,8 @@ import { DatepickerFormatsExampleComponent } from './datepicker-formats-example/
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
-    { provide: NZ_I18N, useValue: en_US }
+    { provide: NZ_I18N, useValue: en_US },
+    DatePipe
   ],
   
   schemas: [  ],

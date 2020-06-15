@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Store } from '@ngrx/store';
-
+import {ActivatedRoute, Router} from "@angular/router";
 import { BasePageComponent } from '../../base-page';
 import { IAppState } from '../../../interfaces/app-state';
 import { HttpService } from '../../../services/http/http.service';
@@ -31,7 +31,8 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
     store: Store<IAppState>,
     httpSv: HttpService,
     private fb: FormBuilder,
-    private modal: TCModalService
+    private modal: TCModalService,
+    private router : Router
   ) {
     super(store, httpSv);
 
@@ -102,6 +103,9 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
       this.getData(API_URL+"patients", 'patients', 'setPatients');
     });
     
+  }
+  redirectProfile(id){
+    this.router.navigateByUrl('../patient-profile');
   }
   // openNew(id: string){
   //   this.router.navigate(['/component-one']);
