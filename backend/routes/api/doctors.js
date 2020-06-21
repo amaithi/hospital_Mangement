@@ -52,6 +52,14 @@ router.get('/doctors', (req, res) => {
         }
     });
 });
+router.get('/doctors', (req, res) => {
+  doctors.find({}).then(user => {
+      if (user) {
+          return res.status(200).send(user);
+          console.log(user, 'uesrezzzzzzz');
+      }
+  });
+});
 router.get("/doctor-profile/:id", (req, res) => {
     var id = req.params.id;
     doctors.findById(id).then((result) => {
@@ -87,7 +95,7 @@ router.get("/doctor-profile/:id", (req, res) => {
         // doctorsSchema.save(function (err, data) {
         //     console.log('sdfsdf');
         // });
-     // res.json(result);
+     // res.json(result); 
     });
   });
   router.post("/doctor-add", (req, res) => {
@@ -102,7 +110,8 @@ router.get("/doctor-profile/:id", (req, res) => {
           doctorId: req.body.doctorId,
           label:    req.body.label,
           profileLink:    req.body.profileLink,
-          social: req.body.social
+          social: req.body.social,
+          hospitalId: req.body.hospitalId,
       });
     console.log(req.body);
       doctorsSchema.save(function (err, data) {

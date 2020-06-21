@@ -155,10 +155,17 @@ onChange(result: Date): void { }
   addPayment(form: FormGroup) {
     if (form.valid) {
       // form.value.billNo = this.totaldata + 1;
-      form.value.billDate = this.datePipe.transform(form.value.billDate, 'yyyy-MM-dd')
-      this.httpSv.addPayment(API_URL+'payments-add/',form.value).subscribe(response => {
+      form.value.billDate = this.datePipe.transform(form.value.billDate, 'yyyy-MM-dd');
+      var req = form.value;
+      
+      req.patientId =  form.value.patient._id;
+      req.patient =  form.value.patient.name;
+      req.doctorId = form.value.doctor._id;
+      req.doctor = form.value.doctor.name;
+      req.hospitalId = JSON.parse(localStorage.getItem('user')).id;
+      this.httpSv.addPayment(API_URL+'payments-add/',req).subscribe(response => {
         if(response.status == 200){
-          this.httpSv.sendpaymentsms(API_URL+'payment-sms/',form.value).subscribe(res => {
+          this.httpSv.sendpaymentsms(API_URL+'payment-sms/',req).subscribe(res => {
             console.log(res)
           });
         }

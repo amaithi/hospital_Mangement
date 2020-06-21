@@ -123,7 +123,9 @@ export class PageDoctorsComponent extends BasePageComponent implements OnInit, O
       addreq.name = form.value.name;
       addreq.lastName = form.value.lastName;
       addreq.doctorId = this.doctorlength +1;
-      addreq.label = form.value.name +' | '+ this.doctorlength +1
+      addreq.label = form.value.name +' | '+ this.doctorlength +1;
+      addreq.hospitalId = JSON.parse(localStorage.getItem('user')).id;
+      
       this.httpSv.addDoctorProf(API_URL+'doctor-add/',addreq).subscribe(response => {
       // delete form.value.gender;
       this.getdoctors();

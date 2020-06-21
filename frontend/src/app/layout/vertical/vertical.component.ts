@@ -70,9 +70,9 @@ export class VerticalLayoutComponent extends BaseLayoutComponent implements OnIn
     this.store.dispatch(new SettingsActions.Update({ layout: 'vertical' }));
   }
   getdoctors(){
-    this.httpSv.getdoctors(API_URL+'doctor-add/').subscribe(response => {
-      this.doctorlength = response.length
-      });
+    // this.httpSv.getdoctors(API_URL+'doctor-add/').subscribe(response => {
+    //   this.doctorlength = response.length
+    //   });
   }
   // open modal window
   openModal<T>(body: Content<T>, header: Content<T> = null, footer: Content<T> = null, options: any = null) {
@@ -127,6 +127,7 @@ export class VerticalLayoutComponent extends BaseLayoutComponent implements OnIn
       newPatient.status = 'Pending';
       newPatient.label = String(this.patientcount) +' | '+newPatient.name;
       newPatient.lastVisit = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+      newPatient.hospitalId = JSON.parse(localStorage.getItem('user')).id;
       this.httpSv.addPatient(API_URL+'patient-add/',newPatient).subscribe(response => {
         this.httpSv.getPatient(API_URL+'patient-get/').subscribe(response => {
           this.patientcount = Number(response[response.length-1].id)+1;

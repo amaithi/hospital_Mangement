@@ -44,6 +44,9 @@ router.post("/payments-add", (req, res) => {
           tax:  req.body.tax,
           discount:  req.body.discount,
           total:  req.body.total,
+          patientId:  req.body.patientId,
+          doctorId: req.body.doctorId,
+          hospitalId: req.body.hospitalId,
          });
     
       paymentsSchema.save(function (err, data) {

@@ -77,21 +77,27 @@ router.post("/appointment-delete", (req, res) => {
           });
         });
       }else{
-        const appointmentsSchema = new appointments({
-          img:    req.body.img,
-          name: req.body.name,
-          email:   req.body.email,
-          number:    req.body.number,
-          date:    req.body.date,
-          fromTo:    req.body.fromTo,
-          doctor:  req.body.doctor,
-          injury:     req.body.injury,
-          tokeno:     req.body.tokenno
+        appointments.find({},function(err,alluser){
+          const appointmentsSchema = new appointments({
+            img:    req.body.img,
+            name: req.body.name,
+            email:   req.body.email,
+            number:    req.body.number,
+            date:    req.body.date,
+            fromTo:    req.body.fromTo,
+            doctor:  req.body.doctor,
+            injury:     req.body.injury,
+            tokenno:     req.body.tokenno,
+            doctorId :  req.body.doctorId,
+            patientId : req.body.patientId, 
+            hospitalId :  req.body.hospitalId,
+          });
+          appointmentsSchema.save(function (err, data) {
+            res.json(data);
         });
-        appointmentsSchema.save(function (err, data) {
-          res.json(data);
-      });
-        
+          
+        })
+       
       }
     
   });

@@ -14,7 +14,7 @@
     </div>
 
     <ul class="list">
-      <ng-container *ngIf="notifications && notifications.length">
+      <!-- <ng-container *ngIf="notifications && notifications.length">
         <li *ngFor="let item of notifications">
           <a href="#">
             <span class="icon {{ item.icon }}"></span>
@@ -26,11 +26,11 @@
             </div>
           </a>
         </li>
-      </ng-container>
+      </ng-container> -->
 
-      <li *ngIf="!notifications || (notifications.length === 0)">
+      <!-- <li *ngIf="!notifications || (notifications.length === 0)">
         <span class="empty-item">No notifications</span>
-      </li>
+      </li> -->
     </ul>
 
     <!-- <div class="menu-footer" *ngIf="notifications && notifications.length">

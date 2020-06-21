@@ -88,7 +88,7 @@ export class PageDoctorProfileComponent extends BasePageComponent implements OnI
       // });
      this.currentId = res.id;
      this.getData(API_URL+'doctor-profile/'+res.id, 'doctorInfo', 'loadedDetect')
-      // this.getData('assets/data/doctors-specialists.json', 'specialists');
+      this.getData('assets/data/doctors-specialists.json', 'specialists');
       // this.getData('assets/data/doctor-timeline.json', 'doctorTimeline');
       this.setPOptions();
     });

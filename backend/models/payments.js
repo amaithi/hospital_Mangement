@@ -2,14 +2,50 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 let payments = new Schema({
     
-    billNo: String,
-    billDate: String,
-    patient: String,
-    doctor: String,
-    charges: String,
-    tax: String,
-    discount: String,
-    total: String,
+    billNo:  {
+        type:"String",
+        default:""
+      },
+    billDate:  {
+        type:"String",
+        default:""
+      },
+    patient:  {
+        type:"String",
+        default:""
+      },
+    doctor:  {
+        type:"String",
+        default:""
+      },
+    charges:  {
+        type:"String",
+        default:""
+      },
+    tax:  {
+        type:"String",
+        default:""
+      },
+    discount:  {
+        type:"String",
+        default:""
+      },
+    total:  {
+        type:"String",
+        default:""
+      },
+    patientId:  {
+        type:"String",
+        default:""
+      },
+    doctorId:  {
+        type:"String",
+        default:""
+      },
+    hospitalId:  {
+        type:"String",
+        default:""
+      },
   
 });
 

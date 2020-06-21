@@ -38,6 +38,19 @@ let appointments = new Schema({
         type:"String",
         default:""
       },
+    doctorId:{
+      type:"String",
+      default:""
+    },
+    patientId:{
+      type:"String",
+      default:""
+    },
+    hospitalId:{
+      type:"String",
+      default:""
+    },
+
 });
 
 module.exports = mongoose.model('appointments', appointments, 'appointments');

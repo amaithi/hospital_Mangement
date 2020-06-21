@@ -158,17 +158,22 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
   addAppointment(form: FormGroup) {
     if (true) {
       
-      var req={};
+      var req = form.value;
       form.value.img = this.currentAvatar;
       form.value.tokenno = this.tokenNo;
       form.value.from = this.datePipe.transform(form.value.from, 'hh:mm');
       form.value.to =this.datePipe.transform(form.value.to, 'hh:mm');
       form.value.fromTo =  form.value.from +'-'+  form.value.to;
       form.value.date = this.datePipe.transform(form.value.date, 'yyyy-MM-dd');
-      req = form.value;
+      req.hospitalId = JSON.parse(localStorage.getItem('user')).id;
+      req.doctorId = req.doctor._id;
+      req.doctor = req.doctor.name
+      req.patientId = req.name._id;
+      req.name = req.name.name;
+      req.tokenno =  this.tokenNo;
       // this.httpSv.getData(API_URL+'listAppointment/').subscribe(response => {
         // req.tokenNo =  response.length+1;
-        this.httpSv.addDoctorProf(API_URL+'appointment-update/',form.value).subscribe(response => {
+        this.httpSv.addDoctorProf(API_URL+'appointment-update/',req).subscribe(response => {
           console.log(response);
           this.getData(API_URL+"listAppointment", 'appointments', 'setLoaded');
           let newAppointment: any = form.value;

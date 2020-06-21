@@ -93,7 +93,7 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
     this.getData(API_URL+'payments-get', 'payments', 'setLoaded');
     this.httpSv.lastappintment(API_URL+'listAppointment').subscribe(response => {
       this.lastappoint= response.slice(Math.max(response.length - 10, 0));
-      this.setDOptions(response);
+    
     });
     this.httpSv.getPatient(API_URL+'patient-get/').subscribe(response => {
       this.currentyear = response.filter(function(val,key){return (val.lastVisit.search('2020') !=-1)});
@@ -116,6 +116,7 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
     });
     this.httpSv.getdoctors(API_URL+'doctors/').subscribe(response => {
       // this.setDOptions(response);
+      this.setDOptions(response);
     });
     this.httpSv.getpayment(API_URL+'payments-get/').subscribe(response => {
       this.totalrevenue = response.reduce((a, {total}) => a + Number(total), 0);
@@ -366,11 +367,11 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
           }
         },
         data:[
-          { value:  res.filter(function(val,key){return (val.role == 'Cardiology')}).length, name: 'Cardiology' },
-          { value: res.filter(function(val,key){return (val.role == 'Dentistry')}).length, name: 'Dentistry' },
-          { value: res.filter(function(val,key){return (val.role == 'Laboratory')}).length, name: 'Laboratory' },
-          { value: res.filter(function(val,key){return (val.role == 'Pulmonology')}).length, name: 'Pulmonology' },
-          { value: res.filter(function(val,key){return (val.role == 'Gynecology')}).length, name: 'Gynecology' }
+          { value:  res.filter(function(val,key){return (val.role == "Cardiologist")}).length, name: "Cardiologist" },
+          { value: res.filter(function(val,key){return (val.role == 'Anesthesiologist')}).length, name: 'Anesthesiologist' },
+          { value: res.filter(function(val,key){return (val.role == 'Dermatologist')}).length, name: 'Dermatologist' },
+          { value: res.filter(function(val,key){return (val.role == 'Internist')}).length, name: 'Internist' },
+          { value: res.filter(function(val,key){return (val.role == 'Obstetrician')}).length, name: 'Obstetrician' }
         ],
         itemStyle: this.pieStyle
       }]

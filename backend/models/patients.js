@@ -18,6 +18,10 @@ let patients = new Schema({
     type:"String",
     default:""
 },
+hospitalId:{
+  type:"String",
+  default:""
+},
   address:   {
     type:"String",
     default:""

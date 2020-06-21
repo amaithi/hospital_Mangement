@@ -1,10 +1,10 @@
 <tc-card class="mb-0">
   <tc-table [rows]="appointments" [hovered]="true" [pagination]="true">
-    <!-- <tc-table-col [columnTitle]="'TokenNo'" [columnName]="'tokenNo'" [enableSorting]="true">
+    <tc-table-col [columnTitle]="'No'" [columnName]="'tokenno'" [enableSorting]="true">
       <ng-template #tableTDTemplate let-value>
         <strong>{{ value }}</strong>
       </ng-template>
-    </tc-table-col> -->
+    </tc-table-col>
     <tc-table-col [columnTitle]="'Photo'" [columnName]="'img'">
       <ng-template #tableTDTemplate let-value>
         <tc-avatar [src]="value"></tc-avatar>
@@ -109,8 +109,8 @@
 
       <tc-form-group>
         <select formControlName="name" class="form-control" >
-          <option value="" disabled>-Select-</option>
-          <option *ngFor="let pname of name" [ngValue]="pname.name">
+          <option value="" disabled>-Patient List-</option>
+          <option *ngFor="let pname of name" [ngValue]="pname">
             {{pname.id}} -- {{pname.name}} -- {{pname.number}}
           </option>
         </select>
@@ -119,8 +119,8 @@
 
       <tc-form-group>
         <select formControlName="doctor" class="form-control" >
-          <option value="" disabled>-Select-</option>
-          <option *ngFor="let dname of doctors" [ngValue]="dname.name">
+          <option value="" disabled>-Doctor List-</option>
+          <option *ngFor="let dname of doctors" [ngValue]="dname">
             {{dname.doctorId}} -- {{dname.name}} -- {{dname.role}}
           </option>
         </select>

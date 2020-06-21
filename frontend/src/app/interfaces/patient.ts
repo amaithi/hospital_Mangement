@@ -9,4 +9,5 @@ export interface IPatient {
   status: string;
   lastVisit: string;
   label: string;
+  hospitalId:string;
 }

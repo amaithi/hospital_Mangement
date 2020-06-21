@@ -125,6 +125,11 @@
 
 <tc-card [title]="'Last appointments'" class="mb-0">
   <tc-table [rows]="lastappoint" [hovered]="true" [pagination]="true">
+    <tc-table-col [columnTitle]="'No'" [columnName]="'tokenno'" [enableSorting]="true">
+      <ng-template #tableTDTemplate let-value>
+        <strong>{{ value }}</strong>
+      </ng-template>
+    </tc-table-col>
     <tc-table-col [columnTitle]="'Photo'" [columnName]="'img'">
       <ng-template #tableTDTemplate let-value>
         <tc-avatar [src]="value"></tc-avatar>

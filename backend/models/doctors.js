@@ -25,6 +25,10 @@ let doctors = new Schema({
       type:"String",
       default:""
     },
+    hospitalId:{
+      type:"String",
+      default:""
+    },
     gender: {
       type:"String",
       default:""
