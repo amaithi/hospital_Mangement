@@ -94,7 +94,8 @@ router.get("/doctor-profile/:id", (req, res) => {
             number:    req.body.number,
             lastVisit:    req.body.lastVisit,
             status:    req.body.status,
-            profileLink:req.body.profileLink
+            profileLink:req.body.profileLink,
+            label:req.body.label,
         });
       
         patientsSchema.save(function (err, data) {

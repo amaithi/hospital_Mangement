@@ -35,7 +35,7 @@
 
     <logo [src]="'assets/img/logo.svg'" [width]="147" [height]="33"></logo>
 
-    <app-menu [src]="'assets/data/menu.json'"></app-menu>
+    <app-menu class="menu-size" [src]="'assets/data/menu.json'"></app-menu>
 
     <div class="add-patient">
       <button
@@ -96,11 +96,12 @@
           Select image
         </button>
       </tc-form-group>
-
+      <tc-form-group>
+       <h2>Patient ID   :  {{patientcount}}</h2> 
+      </tc-form-group>
       <tc-form-group>
         <tc-input [placeholder]="'Name'" formControlName="name"></tc-input>
       </tc-form-group>
-
       <tc-form-group>
         <tc-input [placeholder]="'Number'" [type]="'number'" formControlName="number"></tc-input>
       </tc-form-group>

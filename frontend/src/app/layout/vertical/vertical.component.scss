@@ -1,5 +1,7 @@
 @import '~src/assets/sass/variables';
-
+.menu-size{
+  font-size: 16px;
+}
 :host {
   .app-container {
     padding-left: $vertical-navbar-width;

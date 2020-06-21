@@ -41,6 +41,13 @@ let patients = new Schema({
   profileLink:   {
     type:"String",
     default:""
+},
+lastVisit:  {
+    type:"String",
+    default:new Date()
+},
+label:{
+  type:"String",
 }
 
 });

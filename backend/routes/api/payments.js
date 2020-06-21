@@ -7,6 +7,7 @@ const async = require("async");
 const nodemailer = require('nodemailer');
 const multer = require('multer');
 const payments = require('../../models/payments');
+const Nexmo = require('nexmo');
 router.get('/test1', (req, res) => {
     res.json({
         statue: "success"
@@ -17,6 +18,19 @@ router.get('/test1', (req, res) => {
 //         statue: "success"
 //     });
 // });patient-get
+router.get("/payment-sms",(req,res)=>{
+  const nexmo = new Nexmo({
+    apiKey: '4a8904bd',
+    apiSecret: 'jJETRkNhM1OdtYez',
+  });
+  
+  const from = '919659167747';
+  const to = '919659167747';
+  const text = 'Hello from Vonage SMS API';
+  
+  nexmo.message.sendSms(from, to, text);
+  res.json({"message":"patient Data Added Successfully"});
+})
 
 router.post("/payments-add", (req, res) => {
   var id = req.body.id;

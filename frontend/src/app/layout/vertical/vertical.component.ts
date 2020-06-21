@@ -13,6 +13,8 @@ import { TCModalService } from '../../ui/services/modal/modal.service';
 import { IPatient } from '../../interfaces/patient';
 import * as PatientsActions from '../../store/actions/patients.actions';
 import * as SettingsActions from '../../store/actions/app-settings.actions';
+
+import { DatePipe } from '@angular/common';
 const API_URL = 'http://localhost:5001/api/';
 
 @Component({
@@ -28,14 +30,16 @@ export class VerticalLayoutComponent extends BaseLayoutComponent implements OnIn
   gender: IOption[];
   currentAvatar: string | ArrayBuffer;
   defaultAvatar: string;
-
+  patientcount: any;
+  doctorlength:any;
   constructor(
     store: Store<IAppState>,
     fb: FormBuilder,
     httpSv: HttpService,
     router: Router,
     elRef: ElementRef,
-    private modal: TCModalService
+    private modal: TCModalService,
+    private datePipe :DatePipe
   ) {
     super(store, fb, httpSv, router, elRef);
 
@@ -55,10 +59,21 @@ export class VerticalLayoutComponent extends BaseLayoutComponent implements OnIn
 
   ngOnInit() {
     super.ngOnInit();
-
+    this.getdoctors();
+    this.httpSv.getPatient(API_URL+'patient-get/').subscribe(response => {
+      if(response.length != 0){
+        this.patientcount = Number(response[response.length-1].id)+1;
+      }else{
+        this.patientcount =1;
+      }
+    });
     this.store.dispatch(new SettingsActions.Update({ layout: 'vertical' }));
   }
-
+  getdoctors(){
+    this.httpSv.getdoctors(API_URL+'doctor-add/').subscribe(response => {
+      this.doctorlength = response.length
+      });
+  }
   // open modal window
   openModal<T>(body: Content<T>, header: Content<T> = null, footer: Content<T> = null, options: any = null) {
     this.initPatientForm();
@@ -108,11 +123,14 @@ export class VerticalLayoutComponent extends BaseLayoutComponent implements OnIn
       let newPatient: IPatient = form.value;
       // patient-add
       newPatient.img = this.currentAvatar;
-      newPatient.id = '23';
+      newPatient.id = this.patientcount;
       newPatient.status = 'Pending';
-      newPatient.lastVisit = '';
+      newPatient.label = String(this.patientcount) +' | '+newPatient.name;
+      newPatient.lastVisit = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.httpSv.addPatient(API_URL+'patient-add/',newPatient).subscribe(response => {
-        console.log(response)
+        this.httpSv.getPatient(API_URL+'patient-get/').subscribe(response => {
+          this.patientcount = Number(response[response.length-1].id)+1;
+        });
       });
       this.store.dispatch(new PatientsActions.Add(newPatient));
       this.closeModal();

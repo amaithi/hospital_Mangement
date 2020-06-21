@@ -28,7 +28,8 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
   dateRange: Date[];
   size: string;
   dateMode: string;
-
+  name: any;
+  tokenNo:any;
   constructor(
     store: Store<IAppState>,
     httpSv: HttpService,
@@ -65,11 +66,19 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
 
     this.getData(API_URL+"listAppointment", 'appointments', 'setLoaded');
     this.getData(API_URL+"doctors", 'doctors', 'setLoaded');
+    this.getData(API_URL+'patient-get', 'name','setLoaded');
+  // patient details gets
+    this.httpSv.getpayment(API_URL+'patient-get/').subscribe(response => {
+      this.name = response;
+     });
+    this.getData('assets/data/doctors-specialists.json', 'injury','setLoaded');
   }
 
   ngOnDestroy() {
     super.ngOnDestroy();
+    this.setLoaded();
   }
+
 
   // open modal window
   openModal(body: any, header: any = null, footer: any = null, data: any = null) {
@@ -90,18 +99,20 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
 
   // init form
   initForm(data: any) {
+    this.tokenNo = this.appointments.length+1
     this.appointmentForm = this.formBuilder.group({
       
       img: [(data ? data.img : this.currentAvatar)],
       name: [(data ? data.name : ''), Validators.required],
       email: [(data ? data.email : ''), Validators.required],
       date: [(data ? data.date : new Date()), Validators.required],
-      from: [(data ? data.fromTo.substring(0, (data.fromTo.indexOf('-') - 1)) : ''), Validators.required],
-      to: [(data ? data.fromTo.substring((data.fromTo.indexOf('-') + 2), data.fromTo.length) : ''), Validators.required],
+      from: [(data ? data.fromTo : '12:00'), Validators.required],
+      to: [(data ? data.fromTo : '12:00'), Validators.required],
       number: [(data ? data.number : ''), Validators.required],
       doctor: [(data ? data.doctor : ''), Validators.required],
       injury: [(data ? data.injury : ''), Validators.required],
-      id:[(data ? data._id : '')]
+      id:[(data ? data._id : '')],
+      tokenNo:[(data ? this.tokenNo: '')]
     });
     
   }
@@ -145,27 +156,38 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
 
   // add new appointment
   addAppointment(form: FormGroup) {
-    if (form.valid) {
+    if (true) {
+      
+      var req={};
       form.value.img = this.currentAvatar;
+      form.value.tokenno = this.tokenNo;
       form.value.from = this.datePipe.transform(form.value.from, 'hh:mm');
       form.value.to =this.datePipe.transform(form.value.to, 'hh:mm');
-      form.value.date = this.datePipe.transform(form.value.date, 'dd MMM yyyy')
-      this.httpSv.addDoctorProf(API_URL+'appointment-update/',form.value).subscribe(response => {
-        console.log(response)
-      });
-      let newAppointment: any = form.value;
-
-      newAppointment.fromTo = `${form.value.from} - ${form.value.to}`;
-      newAppointment.img = this.currentAvatar;
-
-      delete newAppointment.from;
-      delete newAppointment.to;
-
-      this.appointments.unshift(newAppointment);
-      let newTableData = JSON.parse(JSON.stringify(this.appointments));
-
-      this.appointments = newTableData;
-      this.closeModal();
+      form.value.fromTo =  form.value.from +'-'+  form.value.to;
+      form.value.date = this.datePipe.transform(form.value.date, 'yyyy-MM-dd');
+      req = form.value;
+      // this.httpSv.getData(API_URL+'listAppointment/').subscribe(response => {
+        // req.tokenNo =  response.length+1;
+        this.httpSv.addDoctorProf(API_URL+'appointment-update/',form.value).subscribe(response => {
+          console.log(response);
+          this.getData(API_URL+"listAppointment", 'appointments', 'setLoaded');
+          let newAppointment: any = form.value;
+  
+          newAppointment.fromTo = `${form.value.from} - ${form.value.to}`;
+          newAppointment.img = this.currentAvatar;
+    
+          delete newAppointment.from;
+          delete newAppointment.to;
+    
+          this.appointments.unshift(newAppointment);
+          let newTableData = JSON.parse(JSON.stringify(this.appointments));
+    
+          this.appointments = newTableData;
+          this.closeModal();
+        });
+      // });
+     
+     
     }
   }
 }

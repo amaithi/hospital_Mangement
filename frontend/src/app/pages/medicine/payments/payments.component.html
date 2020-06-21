@@ -25,10 +25,10 @@
         <span class="nowrap" [tcColor]="'#a5a5a5'">{{ value }}</span>
       </ng-template>
     </tc-table-col>
-    <tc-table-col [columnTitle]="'Charges'" [columnName]="'charges'" [enableSorting]="true"></tc-table-col>
-    <tc-table-col [columnTitle]="'Tax'" [columnName]="'tax'" [enableSorting]="true"></tc-table-col>
-    <tc-table-col [columnTitle]="'Discount'" [columnName]="'discount'" [enableSorting]="true"></tc-table-col>
-    <tc-table-col [columnTitle]="'Total'" [columnName]="'total'" [enableSorting]="true">
+    <tc-table-col [columnTitle]="'Charges Rs'" [columnName]="'charges'" [enableSorting]="true"></tc-table-col>
+    <tc-table-col [columnTitle]="'Tax %'" [columnName]="'tax'" [enableSorting]="true"></tc-table-col>
+    <tc-table-col [columnTitle]="'Discount %'" [columnName]="'discount'" [enableSorting]="true"></tc-table-col>
+    <tc-table-col [columnTitle]="'Total Rs'" [columnName]="'total'" [enableSorting]="true">
       <ng-template #tableTDTemplate let-value>
         <strong>{{ value }}</strong>
       </ng-template>
@@ -51,36 +51,46 @@
 <!-- <ng-container> -->
   <ng-template #modalBody>
     <form [formGroup]="paymentForm" novalidate>
-      <tc-form-group>
+      <!-- <tc-form-group>
         <tc-input [placeholder]="'Bill NO'" formControlName="billNo"></tc-input>
+      </tc-form-group> -->
+
+      <tc-form-group>
+        <select formControlName="patient" class="form-control" >
+          <option value="" disabled>-Select-</option>
+          <option *ngFor="let patient of patients" [ngValue]="patient.name">
+            {{patient.id}} -- {{patient.name}} -- {{patient.number}}
+          </option>
+        </select>
+      </tc-form-group>
+      <tc-form-group>
+        <select formControlName="doctor" class="form-control" >
+          <option value="" disabled>-Select-</option>
+          <option *ngFor="let doctor of doctors" [ngValue]="doctor.name">
+            {{doctor.doctorId}} -- {{doctor.name}} -- {{doctor.role}}
+          </option>
+        </select>
+        <!-- <tc-autocomplete [placeholder]="'Doctor'" [data]="doctors" [key]="'name'" formControlName="doctor"></tc-autocomplete> -->
+      </tc-form-group>
+      <tc-form-group>
+        <nz-date-picker  formControlName="billDate" (ngModelChange)="onChange($event)"></nz-date-picker>
+      </tc-form-group>
+      <tc-form-group>
+        <tc-input [placeholder]="'Charges'" (blur)="calculation()" formControlName="charges"></tc-input>
       </tc-form-group>
 
       <tc-form-group>
-        <tc-input [placeholder]="'Patient'" formControlName="patient"></tc-input>
-      </tc-form-group>
-
-      <tc-form-group>
-        <tc-autocomplete [placeholder]="'Doctor'" [data]="doctors" [key]="'name'" formControlName="doctor"></tc-autocomplete>
-      </tc-form-group>
-      <tc-form-group>
-        <nz-date-picker  formControlName="date" (ngModelChange)="onChange($event)"></nz-date-picker>
-      </tc-form-group>
-      <tc-form-group>
-        <tc-input [placeholder]="'Charges'" formControlName="charges"></tc-input>
-      </tc-form-group>
-
-      <tc-form-group>
-        <tc-input [placeholder]="'Tax'" formControlName="tax"></tc-input>
+        <tc-input [placeholder]="'Tax %'" disabled="true" formControlName="tax"></tc-input>
       </tc-form-group>
       <tc-form-group>
       </tc-form-group>
      
       <tc-form-group>
-        <tc-input [placeholder]="'Discount'" formControlName="discount"></tc-input>
+        <tc-input [placeholder]="'Discount %'" disabled="true" formControlName="discount"></tc-input>
       </tc-form-group>
 
       <tc-form-group class="mb-0">
-        <tc-input [placeholder]="'Total'" formControlName="total"></tc-input>
+        <tc-input [placeholder]="'Total Rs'" disabled="true" formControlName="total"></tc-input>
       </tc-form-group>
     </form>
   </ng-template>
@@ -88,7 +98,7 @@
   <ng-template #modalFooter>
     <div class="actions justify-content-between">
       <button tc-button [type]="'button'" [view]="'error'" (click)="closeModal()">Cancel</button>
-      <button tc-button [view]="'info'" [disabled]="paymentForm.invalid" (click)="addPayment(paymentForm)">
+      <button tc-button [view]="'info'"  (click)="addPayment(paymentForm)">
         Add payment
       </button>
     </div>

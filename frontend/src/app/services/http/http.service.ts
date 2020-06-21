@@ -70,6 +70,18 @@ export class HttpService {
       catchError(this.handleError)
     );
   };
+  getdoctors(source: string) {
+    return this.http.get(source).pipe(
+      tap((res: any) => res),
+      catchError(this.handleError)
+    );
+  };
+  sendpaymentsms(url,req){
+    return this.http.post(url,req).pipe(
+      tap((res: any) => res),
+      catchError(this.handleError)
+    );
+  }
   deleteAppointment(source: string,req) {
     return this.http.post(source,req).pipe(
       tap((res: any) => res),

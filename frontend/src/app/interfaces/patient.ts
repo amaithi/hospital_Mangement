@@ -8,4 +8,5 @@ export interface IPatient {
   address: string;
   status: string;
   lastVisit: string;
+  label: string;
 }

@@ -23,6 +23,7 @@ export class PageDoctorsComponent extends BasePageComponent implements OnInit, O
   defaultAvatar: string;
   specialists: string[];
    filedata = new FormData();
+   doctorlength:any;
   newImage:any;
   constructor(
     store: Store<IAppState>,
@@ -65,8 +66,17 @@ export class PageDoctorsComponent extends BasePageComponent implements OnInit, O
 
     this.getData(API_URL+"doctors", 'doctors', 'setLoaded');
     this.getData('assets/data/doctors-specialists.json', 'specialists');
+    this.getdoctors();
   }
-
+  getdoctors(){
+    this.httpSv.getdoctors(API_URL+'doctors/').subscribe(response => {
+      if(response.length !=0){ 
+        this.doctorlength =  Number(response[response.length-1].doctorId)
+      }else{
+        this.doctorlength = 0;
+      }
+      });
+  }
   ngOnDestroy() {
     super.ngOnDestroy();
   }
@@ -102,7 +112,7 @@ export class PageDoctorsComponent extends BasePageComponent implements OnInit, O
     reader.readAsDataURL(file);
     
   }
-
+  
   // add new doctor
   addDoctor(form: FormGroup) {
     if (form.valid) {
@@ -112,8 +122,11 @@ export class PageDoctorsComponent extends BasePageComponent implements OnInit, O
       addreq.img =  this.currentAvatar;
       addreq.name = form.value.name;
       addreq.lastName = form.value.lastName;
+      addreq.doctorId = this.doctorlength +1;
+      addreq.label = form.value.name +' | '+ this.doctorlength +1
       this.httpSv.addDoctorProf(API_URL+'doctor-add/',addreq).subscribe(response => {
       // delete form.value.gender;
+      this.getdoctors();
       addreq._id = response._id;
       let newDoctor: IUser = addreq;
       newDoctor.img = this.currentAvatar;

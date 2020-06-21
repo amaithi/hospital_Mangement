@@ -85,7 +85,8 @@ router.post("/appointment-delete", (req, res) => {
           date:    req.body.date,
           fromTo:    req.body.fromTo,
           doctor:  req.body.doctor,
-          injury:     req.body.injury
+          injury:     req.body.injury,
+          tokeno:     req.body.tokenno
         });
         appointmentsSchema.save(function (err, data) {
           res.json(data);

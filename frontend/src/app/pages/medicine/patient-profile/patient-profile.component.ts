@@ -7,7 +7,7 @@ import { IAppState } from '../../../interfaces/app-state';
 import { HttpService } from '../../../services/http/http.service';
 import { IOption } from '../../../ui/interfaces/option';
 const API_URL = 'http://localhost:5001/api/';
-
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'page-patient-profile',
   templateUrl: './patient-profile.component.html',
@@ -27,7 +27,8 @@ export class PagePatientProfileComponent extends BasePageComponent implements On
   constructor(
     store: Store<IAppState>,
     httpSv: HttpService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private datePipe :DatePipe
   ) {
     super(store, httpSv);
 
@@ -121,6 +122,8 @@ export class PagePatientProfileComponent extends BasePageComponent implements On
     if (form.valid) {
       this.patientInfo = form.value;
       this.changes = false;
+      // form.value.lastVisit = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      // form.value.id=
       this.httpSv.profileupdate(API_URL+'patient-update/',form.value).subscribe(response => {
         console.log(response);
       });

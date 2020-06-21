@@ -71,6 +71,8 @@ router.get("/doctor-profile/:id", (req, res) => {
             role:   req.body.role,
             gender: req.body.gender,
             address:    req.body.address,
+            doctorId: req.body.doctorId,
+            label:    req.body.label,
             profileLink:    req.body.profileLink,
             social: req.body.social
         });
@@ -97,6 +99,8 @@ router.get("/doctor-profile/:id", (req, res) => {
           role:   req.body.role,
           gender: req.body.gender,
           address:    req.body.address,
+          doctorId: req.body.doctorId,
+          label:    req.body.label,
           profileLink:    req.body.profileLink,
           social: req.body.social
       });

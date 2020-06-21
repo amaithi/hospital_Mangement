@@ -11,7 +11,7 @@ import { IOption } from '../../../ui/interfaces/option';
 import { Content } from '../../../ui/interfaces/modal';
 import * as PatientsActions from '../../../store/actions/patients.actions';
 import { TCModalService } from '../../../ui/services/modal/modal.service';
-
+import { DatePipe } from '@angular/common';
 const API_URL = 'http://localhost:5001/api/';
 @Component({
   selector: 'page-patients',
@@ -32,7 +32,8 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
     httpSv: HttpService,
     private fb: FormBuilder,
     private modal: TCModalService,
-    private router : Router
+    private router : Router,
+    private datePipe:DatePipe,
   ) {
     super(store, httpSv);
 
@@ -78,6 +79,7 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
 
     this.store.select('patients').subscribe(patients => {
       if (patients && patients.length) {
+      
         this.patients = patients;
 
         !this.pageData.loaded ? this.setLoaded() : null;
@@ -148,7 +150,8 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
     this.recordId = data["_id"]
     console.log(data);
     this.patientForm = this.fb.group({
-      id: data.id,
+
+      id:this.patients.length + 1,
       img: [this.currentAvatar],
       name: [data.name ? data.name : '', Validators.required],
       number: [data.number ? data.number : '', Validators.required],
@@ -157,15 +160,17 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
       gender: [data.gender ? data.gender.toLowerCase() : '', Validators.required],
       address: [data.address ? data.address : '', Validators.required],
       status: [data.status ? data.status.toLowerCase() : '', Validators.required]
+
     });
   }
 
   // update patient
   updatePatient(form: FormGroup) {
     if (form.valid) {
-      form.value.id = this.patientId;
+      
       form.value._id=this.recordId ;
       form.value.img = this.currentAvatar;
+      
       let newPatient: IPatient = form.value;
       this.httpSv.updatePatient(API_URL+'patient-update',form.value).subscribe(response => {
         this.getData(API_URL+"patients", 'patients', 'setPatients');

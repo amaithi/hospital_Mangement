@@ -35,18 +35,9 @@ router.get("/doctor-profile/:id", (req, res) => {
   router.post("/appointment-update", (req, res) => {
     var id = req.body.id;
     if(id !=''){
+    
       appointments.findById(id).then((result) => {
-        // const doctorsSchema = new appointments({
-        //     img:    req.body.img,
-        //     name:req.body.name,
-        //     first:  req.body.name,
-        //     last:  req.body.last,
-        //     role:   req.body.role,
-        //     gender: req.body.gender,
-        //     address:    req.body.address,
-        //     profileLink:    "doctor-profile",
-        //     social: req.body.social
-        // });
+       
         appointments.findByIdAndUpdate(id, req.body, {
             new: true
           }, function (err, user) {
@@ -57,19 +48,22 @@ router.get("/doctor-profile/:id", (req, res) => {
           });
         });
       }else{
-        const appointmentsSchema = new appointments({
-          img:    req.body.img,
-          name: req.body.name,
-          email:   req.body.email,
-          number:    req.body.number,
-          date:    req.body.date,
-          fromTo:    req.body.fromTo,
-          doctor:  req.body.doctor,
-          injury:     req.body.injury
+        appointments.find({},function(err,user){
+          const appointmentsSchema = new appointments({
+            img:    req.body.img,
+            name: req.body.name,
+            email:   req.body.email,
+            number:    req.body.number,
+            date:    req.body.date,
+            fromTo:    req.body.fromTo,
+            doctor:  req.body.doctor,
+            injury:     req.body.injury
+          });
+          appointmentsSchema.save(function (err, data) {
+            res.json(data);
         });
-        appointmentsSchema.save(function (err, data) {
-          res.json(data);
-      });
+        })
+       
         
       }
     

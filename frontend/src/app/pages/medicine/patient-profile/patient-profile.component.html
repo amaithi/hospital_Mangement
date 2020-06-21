@@ -84,7 +84,7 @@
 </div>
 
 <tc-card [title]="'Billings'" class="mb-0 mt-4">
-  <tc-table [rows]="billings" [hovered]="true" [headerBgColor]="'#336cfb'" [headerColor]="'#fff'">
+  <tc-table ngIf="billings.length !=0" [rows]="billings" [hovered]="true" [headerBgColor]="'#336cfb'" [headerColor]="'#fff'">
     <tc-table-col [columnTitle]="'Bill NO'" [columnName]="'billNo'" [enableSorting]="true">
       <ng-template #tableTDTemplate let-value>
         <span [tcColor]="'#a5a5a5'">{{ value }}</span>

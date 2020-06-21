@@ -7,6 +7,7 @@ import { IAppState } from '../../../interfaces/app-state';
 import { HttpService } from '../../../services/http/http.service';
 import {ActivatedRoute, Router} from "@angular/router";
 const API_URL = 'http://localhost:5001/api/';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'page-dashboard',
   templateUrl: './dashboard.component.html',
@@ -34,10 +35,18 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
   pievalue3:  any;
   pievalue4:  any;
   pievalue5:  any;
+  prevyear :  any;
+  currentyear:  any;
+  startDate:  any;
+  endDate:  any;
+  week: any;
+  weekrevenue: any;
+  monthrevenue: any;
   constructor(
     store: Store<IAppState>,
     httpSv: HttpService,
     private router: Router,
+    private datePipe : DatePipe
   ) {
     super(store, httpSv);
 
@@ -83,9 +92,12 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
    
     this.getData(API_URL+'payments-get', 'payments', 'setLoaded');
     this.httpSv.lastappintment(API_URL+'listAppointment').subscribe(response => {
-      this.lastappoint= response.slice(Math.max(response.length - 10, 0));;
+      this.lastappoint= response.slice(Math.max(response.length - 10, 0));
+      this.setDOptions(response);
     });
     this.httpSv.getPatient(API_URL+'patient-get/').subscribe(response => {
+      this.currentyear = response.filter(function(val,key){return (val.lastVisit.search('2020') !=-1)});
+      this.prevyear = response.filter(function(val,key){return (val.lastVisit.search('2019') !=-1)})
       this.pievalue1 = response.filter(function(val,key){return (val.age<10 && 0<val.age )}).length;
       this.pievalue2 = response.filter(function(val,key){return (val.age<20 && 10<val.age )}).length;
       this.pievalue3 = response.filter(function(val,key){return (val.age<30 && 20<val.age )}).length;
@@ -94,6 +106,7 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
       this.totalpatient= response.length;
       this.setPGOptions(response.filter(function(val,key){return (val.gender == 'male' )}).length,response.filter(function(val,key){return (val.gender == 'female' )}).length);
       this.setPAOptions(this.pievalue1,this.pievalue2,this.pievalue3,this.pievalue4,this.pievalue5);
+      this.setHSOptions(this.prevyear,this.currentyear);
     });
     this.httpSv.pendingPatient(API_URL+'patients-status-pending/').subscribe(response => {
       this.patientpending= response.length;
@@ -101,22 +114,56 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
     this.httpSv.approvepatient(API_URL+'patients-status-approved/').subscribe(response => {
       this.patientapprove= response.length;
     });
-    
-    this.httpSv.getpayment(API_URL+'payments-get/').subscribe(response => {
-      this.totalrevenue = response.reduce(function(a,b){return Number(a.total)+Number(b.total)})
+    this.httpSv.getdoctors(API_URL+'doctors/').subscribe(response => {
+      // this.setDOptions(response);
     });
+    this.httpSv.getpayment(API_URL+'payments-get/').subscribe(response => {
+      this.totalrevenue = response.reduce((a, {total}) => a + Number(total), 0);
+     var filterWeek = []
+     var filtermonth = [];
+     response.forEach(function(val,key){
+        var current = new Date();     // get current date
+        var weekstart = current.getDate() - current.getDay() +1;    
+        var weekend = weekstart + 6;       // end day is the first day + 6
+        var startDate = new Date(current.setDate(weekstart)).setHours(0,0,0,0);  
+        var endDate = new Date(current.setDate(weekend)).setHours(0,0,0,0);
+        if((((new Date(startDate) <= new Date(val.billDate))  &&  (new Date(val.billDate) <= new Date(endDate) )))){
+          filterWeek.push(Number(val.total)) 
+        }
+        });
+          this.week = filterWeek;
+          this.setPIOptions(this.week);
+          const reducer = (accumulator, currentValue) => accumulator + currentValue;
+          this.weekrevenue = filterWeek.reduce(reducer)
+         console.log(this.week);
+
+         response.forEach(function(val,key){
+          var date = new Date();
+          var firstDay = new Date(date.getFullYear(), date.getMonth(), 1).setHours(0,0,0,0);
+          var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).setHours(0,0,0,0);
+          if((((new Date(firstDay) <= new Date(val.billDate))  &&  (new Date(val.billDate) <= new Date(lastDay) )))){
+            filtermonth.push(Number(val.total)) 
+          }
+          });
+
+          this.setHEOptions(filtermonth);
+          const reducer1 = (accumulator, currentValue) => accumulator + currentValue;
+          this.monthrevenue = filtermonth.reduce(reducer1)
+      // this.startDate = new Date(new Date().setDate(new Date().getDate()-7));
+      // this.endDate = new Date();
+    });
+   
     
-    this.setHSOptions();
-    this.setDOptions();
-    this.setPIOptions();
-    this.setHEOptions();
+    
+    // this.setPIOptions();
+    // this.setHEOptions();
   }
 
   ngOnDestroy() {
     super.ngOnDestroy();
   }
 
-  setHSOptions() {
+  setHSOptions(a,b) {
     this.hsOptions = {
       color: ['#ed5564', '#336cfb'],
       tooltip: {
@@ -126,7 +173,7 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
         }
       },
       legend: {
-        data: ['Patients 2018', 'Patients 2019']
+        data: ['Patients 2019', 'Patients 2020']
       },
       grid: {
         left: 30,
@@ -154,7 +201,7 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
               }
             }
           },
-          data: ['2019-1', '2019-2', '2019-3', '2019-4', '2019-5', '2019-6', '2019-7', '2019-8', '2019-9', '2019-10', '2019-11', '2019-12']
+          data: ['2020-1', '2020-2', '2020-3', '2020-4', '2020-5', '2020-6', '2020-7', '2020-8', '2020-9', '2020-10', '2020-11', '2020-12']
         },
         {
           type: 'category',
@@ -175,7 +222,7 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
               }
             }
           },
-          data: ['2018-1', '2018-2', '2018-3', '2018-4', '2018-5', '2018-6', '2018-7', '2018-8', '2018-9', '2018-10', '2018-11', '2018-12']
+          data: ['2019-1', '2019-2', '2019-3', '2019-4', '2019-5', '2019-6', '2019-7', '2019-8', '2019-9', '2019-10', '2019-11', '2019-12']
         }
       ],
       yAxis: [
@@ -185,17 +232,17 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
       ],
       series: [
         {
-          name: 'Patients 2018',
+          name: 'Patients 2019',
           type: 'line',
           xAxisIndex: 1,
           smooth: true,
-          data: [159, 149, 174, 182, 219, 201, 175, 182, 119, 118, 112, 96]
+          data: [a.filter(function(val,key){return (val.lastVisit.split('-')[1] == '01')}).length, a.filter(function(val,key){return (val.lastVisit.split('-')[1] == '02')}).length, a.filter(function(val,key){return (val.lastVisit.split('-')[1] == '03')}).length, a.filter(function(val,key){return (val.lastVisit.split('-')[1] == '04')}).length, a.filter(function(val,key){return (val.lastVisit.split('-')[1] == '05')}).length, a.filter(function(val,key){return (val.lastVisit.split('-')[1] == '06')}).length, a.filter(function(val,key){return (val.lastVisit.split('-')[1] == '07')}).length, a.filter(function(val,key){return (val.lastVisit.split('-')[1] == '08')}).length, a.filter(function(val,key){return (val.lastVisit.split('-')[1] == '09')}).length, a.filter(function(val,key){return (val.lastVisit.split('-')[1] == '10')}).length, a.filter(function(val,key){return (val.lastVisit.split('-')[1] == '11')}).length, a.filter(function(val,key){return (val.lastVisit.split('-')[1] == '12')}).length]
         },
         {
-          name: 'Patients 2019',
+          name: 'Patients 2020',
           type: 'line',
           smooth: true,
-          data: [95, 124, 132, 143, 138, 178, 194, 211, 234, 257, 241, 226]
+          data: [b.filter(function(val,key){return (val.lastVisit.split('-')[1] == '01')}).length, b.filter(function(val,key){return (val.lastVisit.split('-')[1] == '02')}).length, b.filter(function(val,key){return (val.lastVisit.split('-')[1] == '03')}).length, b.filter(function(val,key){return (val.lastVisit.split('-')[1] == '04')}).length, b.filter(function(val,key){return (val.lastVisit.split('-')[1] == '05')}).length, b.filter(function(val,key){return (val.lastVisit.split('-')[1] == '06')}).length, b.filter(function(val,key){return (val.lastVisit.split('-')[1] == '07')}).length, b.filter(function(val,key){return (val.lastVisit.split('-')[1] == '08')}).length, b.filter(function(val,key){return (val.lastVisit.split('-')[1] == '09')}).length, b.filter(function(val,key){return (val.lastVisit.split('-')[1] == '10')}).length, b.filter(function(val,key){return (val.lastVisit.split('-')[1] == '11')}).length, b.filter(function(val,key){return (val.lastVisit.split('-')[1] == '12')}).length]
         }
       ]
     };
@@ -296,7 +343,7 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
     };
   }
 
-  setDOptions() {
+  setDOptions(res) {
     this.dOptions = {
       grid: {
         left: 0,
@@ -319,18 +366,18 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
           }
         },
         data:[
-          { value: 115, name: 'Cardiology' },
-          { value: 173, name: 'Dentistry' },
-          { value: 154, name: 'Laboratory' },
-          { value: 180, name: 'Pulmonology' },
-          { value: 219, name: 'Gynecology' }
+          { value:  res.filter(function(val,key){return (val.role == 'Cardiology')}).length, name: 'Cardiology' },
+          { value: res.filter(function(val,key){return (val.role == 'Dentistry')}).length, name: 'Dentistry' },
+          { value: res.filter(function(val,key){return (val.role == 'Laboratory')}).length, name: 'Laboratory' },
+          { value: res.filter(function(val,key){return (val.role == 'Pulmonology')}).length, name: 'Pulmonology' },
+          { value: res.filter(function(val,key){return (val.role == 'Gynecology')}).length, name: 'Gynecology' }
         ],
         itemStyle: this.pieStyle
       }]
     };
   }
 
-  setPIOptions() {
+  setPIOptions(weekdata) {
     this.piOptions = {
       color: ['#ed5564'],
       grid: {
@@ -351,14 +398,14 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
           name: 'Patients 2019',
           type: 'line',
           smooth: true,
-          data: [95, 124, 132, 143, 138, 178, 194, 211, 234, 257, 241, 226],
+          data: weekdata,
           areaStyle: {}
         }
       ]
     };
   }
 
-  setHEOptions() {
+  setHEOptions(monthdata) {
     this.heOptions = {
       color: ['#64B5F6'],
       grid: {
@@ -379,7 +426,7 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
           name: 'Patients 2019',
           type: 'line',
           smooth: true,
-          data: [94, 111, 90, 85, 70, 83, 94, 109, 89, 74, 83, 78],
+          data: monthdata,
           areaStyle: {}
         }
       ]

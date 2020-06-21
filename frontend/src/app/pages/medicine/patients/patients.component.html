@@ -40,13 +40,13 @@
     </tc-table-col>
     <tc-table-col [columnTitle]="'Status'" [columnName]="'status'" [enableSorting]="true">
       <ng-template #tableTDTemplate let-value>
-        <tc-badge [view]="value === 'Approved' ? 'success' : 'warning'">{{ value }}</tc-badge>
+        <tc-badge [view]="value === 'approved' ? 'success' : 'warning'">{{ value }}</tc-badge>
       </ng-template>
     </tc-table-col>
     <tc-table-col [columnTitle]="'Actions'" [columnName]="'actions'">
       <ng-template #tableTDTemplate let-row="row">
         <div class="actions">
-          <a
+          <!-- <a
             href="#"
             tc-button
             (click)="redirectProfile(row._id)"
@@ -55,7 +55,7 @@
             [square]="true"
             [tcShape]="500"
             [size]="'sm'"
-          ></a>
+          ></a> -->
 
           <button
             tc-button

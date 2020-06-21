@@ -8,6 +8,7 @@ import { Content } from '../../../ui/interfaces/modal';
 import { TCModalService } from '../../../ui/services/modal/modal.service';
 import { IUser } from '../../../ui/interfaces/user';
 const API_URL = 'http://localhost:5001/api/';
+import { DatePipe } from '@angular/common';
 // import { IMyOptions } from 'ng-uikit-pro-standard';
 import * as $ from 'jquery'; 
 @Component({
@@ -23,11 +24,14 @@ export class PagePaymentsComponent extends BasePageComponent implements OnInit, 
   dateRange: Date[];
   size: string;
   dateMode: string;
+  totaldata:  any;
+  patients: any;
   constructor(
     store: Store<IAppState>,
     httpSv: HttpService,
     private modal: TCModalService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private datePipe: DatePipe
   ) {
     super(store, httpSv);
 
@@ -72,13 +76,24 @@ onChange(result: Date): void { }
     super.ngOnInit();
 
     this.getData(API_URL+'payments-get', 'payments', 'setLoaded');
-    this.getData('assets/data/doctors.json', 'doctors');
+    this.getData(API_URL+'doctors', 'doctors', 'setLoaded');
+    // this.getData(API_URL+'patient-get', 'patients', 'setLoaded');
+    this.httpSv.getpayment(API_URL+'patient-get/').subscribe(response => {
+      this.patients = response;
+     });
+  
   }
 
   ngOnDestroy() {
     super.ngOnDestroy();
   }
-
+  calculation(){
+    console.log('yest');
+    var taxcal =(this.paymentForm.value.charges * this.paymentForm.value.tax)/100;
+    var discount = (this.paymentForm.value.charges * this.paymentForm.value.discount)/100;
+    // this.paymentForm.value.total = Math.round(Number(this.paymentForm.value.charges) + taxcal - discount);
+    this.paymentForm.get('total').patchValue(Math.round(Number(this.paymentForm.value.charges) + taxcal - discount))
+  }
   // open modal window
   openModal<T>(body: Content<T>, header: Content<T> = null, footer: Content<T> = null, options: any = null) {
     this.initPaymentForm();
@@ -99,23 +114,54 @@ onChange(result: Date): void { }
 
   // init form
   initPaymentForm() {
-    this.paymentForm = this.formBuilder.group({
-      billNo: ['', Validators.required],
-      billDate: ['', Validators.required],
-      patient: ['', Validators.required],
-      doctor: ['', Validators.required],
-      charges: ['', Validators.required],
-      tax: ['', Validators.required],
-      discount: ['', Validators.required],
-      total: ['', Validators.required],
-      date: ['', Validators.required]
-    });
+    this.httpSv.getpayment(API_URL+'payments-get/').subscribe(response => {
+      if(response.length !=0){
+        this.paymentForm = this.formBuilder.group({
+          billNo: [response.length+1],
+          billDate: ['', Validators.required],
+          patient: ['', Validators.required],
+          doctor: ['', Validators.required],
+          charges: ['', Validators.required],
+          tax: [5, Validators.required],
+          discount: [10, Validators.required],
+          total: ['', Validators.required],
+          // date: ['', Validators.required]
+        });
+      //  setTimeout (() => {
+      //    this.totaldata = response.length;
+      //    this.paymentForm.get('billNo').patchValue(response.length+1) 
+      // }, 200);
+     
+      }else{
+        this.paymentForm = this.formBuilder.group({
+          billNo: [1],
+          billDate: ['', Validators.required],
+          patient: ['', Validators.required],
+          doctor: ['', Validators.required],
+          charges: ['', Validators.required],
+          tax: [5, Validators.required],
+          discount: [10, Validators.required],
+          total: ['', Validators.required],
+          // date: ['', Validators.required]
+        });
+       
+      }
+   
+     });
+   
   }
 
   // add new payment
   addPayment(form: FormGroup) {
     if (form.valid) {
-      this.httpSv.addPayment(API_URL+'payments-add/',form.valid).subscribe(response => {
+      // form.value.billNo = this.totaldata + 1;
+      form.value.billDate = this.datePipe.transform(form.value.billDate, 'yyyy-MM-dd')
+      this.httpSv.addPayment(API_URL+'payments-add/',form.value).subscribe(response => {
+        if(response.status == 200){
+          this.httpSv.sendpaymentsms(API_URL+'payment-sms/',form.value).subscribe(res => {
+            console.log(res)
+          });
+        }
         this.payments.unshift(form.value);
         let newTableData = JSON.parse(JSON.stringify(this.payments));
   

@@ -29,6 +29,15 @@ let doctors = new Schema({
       type:"String",
       default:""
     },
+    doctorId:{
+      type:"Number",
+      default:""
+    },
+    label: {
+      type:"String",
+      default:""
+    },
+
     profileLink:    {
       type:"String",
       default:""

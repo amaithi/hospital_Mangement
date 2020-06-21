@@ -1,5 +1,10 @@
 <tc-card class="mb-0">
   <tc-table [rows]="appointments" [hovered]="true" [pagination]="true">
+    <!-- <tc-table-col [columnTitle]="'TokenNo'" [columnName]="'tokenNo'" [enableSorting]="true">
+      <ng-template #tableTDTemplate let-value>
+        <strong>{{ value }}</strong>
+      </ng-template>
+    </tc-table-col> -->
     <tc-table-col [columnTitle]="'Photo'" [columnName]="'img'">
       <ng-template #tableTDTemplate let-value>
         <tc-avatar [src]="value"></tc-avatar>
@@ -97,13 +102,29 @@
           Select image
         </button>
       </tc-form-group>
-
       <tc-form-group>
-        <tc-input [placeholder]="'Name'" formControlName="name"></tc-input>
+       Appointment Number {{tokenNo}}    
+         
       </tc-form-group>
 
       <tc-form-group>
-        <tc-autocomplete [placeholder]="'Doctor'" [data]="doctors" [key]="'name'" formControlName="doctor"></tc-autocomplete>
+        <select formControlName="name" class="form-control" >
+          <option value="" disabled>-Select-</option>
+          <option *ngFor="let pname of name" [ngValue]="pname.name">
+            {{pname.id}} -- {{pname.name}} -- {{pname.number}}
+          </option>
+        </select>
+        <!-- <tc-autocomplete [placeholder]="'Name'" [data]="name" [key]="'name'" formControlName="name"></tc-autocomplete> -->
+      </tc-form-group>
+
+      <tc-form-group>
+        <select formControlName="doctor" class="form-control" >
+          <option value="" disabled>-Select-</option>
+          <option *ngFor="let dname of doctors" [ngValue]="dname.name">
+            {{dname.doctorId}} -- {{dname.name}} -- {{dname.role}}
+          </option>
+        </select>
+        <!-- <tc-autocomplete [placeholder]="'Doctor'" [data]="doctors" [key]="'name'" formControlName="doctor"></tc-autocomplete> -->
       </tc-form-group>
 
       <tc-form-group>
@@ -154,6 +175,7 @@
       </tc-form-group>
 
       <tc-form-group class="mb-0">
+        <!-- <tc-autocomplete [placeholder]="'injury'" [data]="injury" formControlName="injury"></tc-autocomplete> -->
         <tc-input [placeholder]="'Injury'" formControlName="injury"></tc-input>
       </tc-form-group>
     </form>
@@ -162,7 +184,7 @@
   <ng-template #modalFooter>
     <div class="actions justify-content-between">
       <button tc-button [type]="'button'" [view]="'error'" (click)="closeModal()">Cancel</button>
-      <button tc-button [view]="'info'" [disabled]="appointmentForm.invalid" (click)="addAppointment(appointmentForm)">
+      <button tc-button [view]="'info'" (click)="addAppointment(appointmentForm)">
         Add appointment
       </button>
     </div>
