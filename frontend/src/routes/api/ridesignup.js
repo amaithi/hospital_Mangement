@@ -69,7 +69,7 @@ router.post('/login', (req, res) => {
       ridesignup.findOne({ email: req.body.email,role:req.body.role }).then((user) => {
         if (user) {
           return res.status(400).json({
-            email: "Email already existss",
+            message: "Email already existss",
           });
         }else{
           const ridesignupSchema = new ridesignup(

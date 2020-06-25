@@ -15,6 +15,7 @@ import * as PatientsActions from '../../store/actions/patients.actions';
 import * as SettingsActions from '../../store/actions/app-settings.actions';
 
 import { DatePipe } from '@angular/common';
+import { AnyARecord } from 'dns';
 const API_URL = 'http://localhost:5001/api/';
 
 @Component({
@@ -32,6 +33,7 @@ export class VerticalLayoutComponent extends BaseLayoutComponent implements OnIn
   defaultAvatar: string;
   patientcount: any;
   doctorlength:any;
+  hospitalId: any;
   constructor(
     store: Store<IAppState>,
     fb: FormBuilder,
@@ -60,7 +62,8 @@ export class VerticalLayoutComponent extends BaseLayoutComponent implements OnIn
   ngOnInit() {
     super.ngOnInit();
     this.getdoctors();
-    this.httpSv.getPatient(API_URL+'patient-get/').subscribe(response => {
+    this.hospitalId =JSON.parse(localStorage.getItem('user')).id;
+    this.httpSv.getPatient(API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
       if(response.length != 0){
         this.patientcount = Number(response[response.length-1].id)+1;
       }else{
@@ -129,7 +132,7 @@ export class VerticalLayoutComponent extends BaseLayoutComponent implements OnIn
       newPatient.lastVisit = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       newPatient.hospitalId = JSON.parse(localStorage.getItem('user')).id;
       this.httpSv.addPatient(API_URL+'patient-add/',newPatient).subscribe(response => {
-        this.httpSv.getPatient(API_URL+'patient-get/').subscribe(response => {
+        this.httpSv.getPatient(API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
           this.patientcount = Number(response[response.length-1].id)+1;
         });
       });

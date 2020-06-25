@@ -27,7 +27,7 @@ export class BaseLayoutComponent implements OnInit {
   searchData: any[];
   scrolled: boolean;
   patients: IPatient[];
-
+  hospitalId: any;
   constructor(
     public store: Store<IAppState>,
     public fb: FormBuilder,
@@ -50,9 +50,9 @@ export class BaseLayoutComponent implements OnInit {
     this.store.select('appSettings').subscribe(settings => {
       settings ? this.appSettings = settings : null;
     });
-
+    this.hospitalId =JSON.parse(localStorage.getItem('user')).id;
     this.getSearchData('assets/data/menu.json');
-    this.getData(API_URL+"patients", 'patients', 'setPatients');
+    this.getData(API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
     this.initSearchForm();
     this.scrollToTop();
   }

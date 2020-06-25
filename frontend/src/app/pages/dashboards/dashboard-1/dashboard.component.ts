@@ -42,6 +42,7 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
   week: any;
   weekrevenue: any;
   monthrevenue: any;
+  hospitalId: any;
   constructor(
     store: Store<IAppState>,
     httpSv: HttpService,
@@ -82,6 +83,7 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
 
   ngOnInit() {
     super.ngOnInit();
+    this.hospitalId =JSON.parse(localStorage.getItem('user')).id;
     var data = localStorage.getItem('user');
     if(data ==null){
       this.router.navigateByUrl('/public/sign-in');
@@ -90,12 +92,12 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
     this.profileName =parseData.username;
     //  this.getData(API_URL+'listAppointment', 'appointments', 'setLoaded');
    
-    this.getData(API_URL+'payments-get', 'payments', 'setLoaded');
-    this.httpSv.lastappintment(API_URL+'listAppointment').subscribe(response => {
+    this.getData(API_URL+'payments-get/'+this.hospitalId, 'payments', 'setLoaded');
+    this.httpSv.lastappintment(API_URL+'listAppointment/'+this.hospitalId).subscribe(response => {
       this.lastappoint= response.slice(Math.max(response.length - 10, 0));
     
     });
-    this.httpSv.getPatient(API_URL+'patient-get/').subscribe(response => {
+    this.httpSv.getPatient(API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
       this.currentyear = response.filter(function(val,key){return (val.lastVisit.search('2020') !=-1)});
       this.prevyear = response.filter(function(val,key){return (val.lastVisit.search('2019') !=-1)})
       this.pievalue1 = response.filter(function(val,key){return (val.age<10 && 0<val.age )}).length;
@@ -108,17 +110,17 @@ export class PageDashboardComponent extends BasePageComponent implements OnInit,
       this.setPAOptions(this.pievalue1,this.pievalue2,this.pievalue3,this.pievalue4,this.pievalue5);
       this.setHSOptions(this.prevyear,this.currentyear);
     });
-    this.httpSv.pendingPatient(API_URL+'patients-status-pending/').subscribe(response => {
+    this.httpSv.pendingPatient(API_URL+'patients-status-pending/'+this.hospitalId).subscribe(response => {
       this.patientpending= response.length;
     });
-    this.httpSv.approvepatient(API_URL+'patients-status-approved/').subscribe(response => {
+    this.httpSv.approvepatient(API_URL+'patients-status-approved/'+this.hospitalId).subscribe(response => {
       this.patientapprove= response.length;
     });
-    this.httpSv.getdoctors(API_URL+'doctors/').subscribe(response => {
+    this.httpSv.getdoctors(API_URL+'doctors/'+this.hospitalId).subscribe(response => {
       // this.setDOptions(response);
       this.setDOptions(response);
     });
-    this.httpSv.getpayment(API_URL+'payments-get/').subscribe(response => {
+    this.httpSv.getpayment(API_URL+'payments-get/'+this.hospitalId).subscribe(response => {
       this.totalrevenue = response.reduce((a, {total}) => a + Number(total), 0);
      var filterWeek = []
      var filtermonth = [];

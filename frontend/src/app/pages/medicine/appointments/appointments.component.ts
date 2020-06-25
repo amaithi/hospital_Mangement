@@ -30,6 +30,7 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
   dateMode: string;
   name: any;
   tokenNo:any;
+  hospitalId:any;
   constructor(
     store: Store<IAppState>,
     httpSv: HttpService,
@@ -63,12 +64,12 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
 
   ngOnInit() {
     super.ngOnInit();
-
-    this.getData(API_URL+"listAppointment", 'appointments', 'setLoaded');
-    this.getData(API_URL+"doctors", 'doctors', 'setLoaded');
-    this.getData(API_URL+'patient-get', 'name','setLoaded');
+    this.hospitalId =JSON.parse(localStorage.getItem('user')).id;
+    this.getData(API_URL+"listAppointment/"+this.hospitalId, 'appointments', 'setLoaded');
+    this.getData(API_URL+"doctors/"+this.hospitalId, 'doctors', 'setLoaded');
+    this.getData(API_URL+"patient-get/"+this.hospitalId, 'name','setLoaded');
   // patient details gets
-    this.httpSv.getpayment(API_URL+'patient-get/').subscribe(response => {
+    this.httpSv.getpayment(API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
       this.name = response;
      });
     this.getData('assets/data/doctors-specialists.json', 'injury','setLoaded');
@@ -175,7 +176,7 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
         // req.tokenNo =  response.length+1;
         this.httpSv.addDoctorProf(API_URL+'appointment-update/',req).subscribe(response => {
           console.log(response);
-          this.getData(API_URL+"listAppointment", 'appointments', 'setLoaded');
+          this.getData(API_URL+"listAppointment/"+this.hospitalId, 'appointments', 'setLoaded');
           let newAppointment: any = form.value;
   
           newAppointment.fromTo = `${form.value.from} - ${form.value.to}`;

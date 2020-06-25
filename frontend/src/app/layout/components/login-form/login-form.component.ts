@@ -9,7 +9,7 @@ const API_URL = 'http://localhost:5001/api/';
 import { BasePageComponent } from '../../../pages/base-page';
 import {ActivatedRoute, Router} from "@angular/router";
 // import {TokenPayload, UserService} from "../services/user.service";
-
+import { NotificationService } from '../notification/notification.service';
 
 @Component({
   selector: 'login-form',
@@ -29,6 +29,7 @@ export class LoginFormComponent extends BasePageComponent implements OnInit, OnD
     private modal: TCModalService,
     private formBuilder: FormBuilder,
     private actroute: ActivatedRoute,
+    private notifyService : NotificationService,
     private router: Router,
   ) {
     super(store, httpSv);
@@ -65,9 +66,12 @@ export class LoginFormComponent extends BasePageComponent implements OnInit, OnD
       this.httpSv.postCall(API_URL+'user-login/',this.loginForm.value).subscribe(response => {
         if(response.status == 200){
           localStorage.setItem('user', JSON.stringify(response.updatedata));
+          this.notifyService.showSuccess('', response.message);
           this.router.navigateByUrl('/vertical/default-dashboard');
         }
-      });
+      }, (err) => {
+        this.notifyService.showError('', err.message);
+    })
     }
   }
 }

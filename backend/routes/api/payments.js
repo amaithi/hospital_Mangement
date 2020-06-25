@@ -64,8 +64,24 @@ router.get('/patients', (req, res) => {
         }
     });
 });
+router.get('/patients/:id', (req, res) => {
+  payments.find({hospitalId:req.params.id}).then(user => {
+        if (user) {
+            return res.status(200).send(user);
+            console.log(user, 'uesrezzzzzzz');
+        }
+    });
+});
 router.get('/payments-get', (req, res) => {
   payments.find({}).then(user => {
+      if (user) {
+          return res.status(200).send(user);
+          console.log(user, 'uesrezzzzzzz');
+      }
+  });
+});
+router.get('/payments-get/:id', (req, res) => {
+  payments.find({hospitalId:req.params.id}).then(user => {
       if (user) {
           return res.status(200).send(user);
           console.log(user, 'uesrezzzzzzz');

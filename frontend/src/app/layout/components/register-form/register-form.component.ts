@@ -7,7 +7,7 @@ import { TCModalService } from '../../../ui/services/modal/modal.service';
 import { IUser } from '../../../ui/interfaces/user';
 const API_URL = 'http://localhost:5001/api/';
 import { BasePageComponent } from '../../../pages/base-page';
-
+import { NotificationService } from '../notification/notification.service';
 @Component({
   selector: 'register-form',
   templateUrl: './register-form.component.html',
@@ -24,7 +24,8 @@ export class RegisterFormComponent extends BasePageComponent implements OnInit, 
     httpSv: HttpService,
     private fb: FormBuilder, 
     private modal: TCModalService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private notifyService : NotificationService,
   ) {
     super(store, httpSv);
     }
@@ -41,7 +42,10 @@ export class RegisterFormComponent extends BasePageComponent implements OnInit, 
     if(this.registerForm.valid){
       this.httpSv.signupAPI(API_URL+'user-save/',this.registerForm.value).subscribe(response => {
         console.log(response)
-      });
+        this.notifyService.showSuccess('', response.message);
+      }, (err) => {
+        this.notifyService.showError('', err.message);
+    })
   
     }
   }

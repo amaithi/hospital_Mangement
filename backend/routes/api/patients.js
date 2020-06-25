@@ -16,7 +16,7 @@ router.get('/test1', (req, res) => {
 //     res.json({
 //         statue: "success"
 //     });
-// });patient-get
+// });patient-get 
 router.get('/patients', (req, res) => {
     patients.find({}).then(user => {
         if (user) {
@@ -24,6 +24,22 @@ router.get('/patients', (req, res) => {
             console.log(user, 'uesrezzzzzzz');
         }
     });
+});
+router.get('/patients/:id', (req, res) => {
+  patients.find({hospitalId:req.params.id}).then(user => {
+      if (user) {
+          return res.status(200).send(user);
+          console.log(user, 'uesrezzzzzzz');
+      }
+  });
+});
+router.get('/patients-status-pending/:id', (req, res) => {
+  patients.find({hospitalId:req.params.id,status:'Pending'}).then(user => {
+      if (user) {
+          return res.status(200).send(user);
+          console.log(user, 'uesrezzzzzzz');
+      }
+  });
 });
 router.get('/patients-status-pending', (req, res) => {
   patients.find({status:'Pending'}).then(user => {
@@ -34,6 +50,14 @@ router.get('/patients-status-pending', (req, res) => {
   });
 });
 router.get('/patients-status-approved', (req, res) => {
+  patients.find({hospitalId:req.params.id,status:'approved'}).then(user => {
+      if (user) {
+          return res.status(200).send(user);
+          console.log(user, 'uesrezzzzzzz');
+      }
+  });
+});
+router.get('/patients-status-approved/:id', (req, res) => {
   patients.find({status:'approved'}).then(user => {
       if (user) {
           return res.status(200).send(user);
@@ -43,6 +67,14 @@ router.get('/patients-status-approved', (req, res) => {
 });
 router.get('/patient-get', (req, res) => {
   patients.find({}).then(user => {
+      if (user) {
+          return res.status(200).send(user);
+          console.log(user, 'uesrezzzzzzz');
+      }
+  });
+});
+router.get('/patient-get/:id', (req, res) => {
+  patients.find({hospitalId:req.params.id}).then(user => {
       if (user) {
           return res.status(200).send(user);
           console.log(user, 'uesrezzzzzzz');

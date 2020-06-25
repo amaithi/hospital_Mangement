@@ -147,7 +147,7 @@ router.post("/user-save", (req, res) => {
   ridesignup.findOne({ email: req.body.email}).then((user) => {
     if (user) {
       return res.status(400).json({
-        email: "Email already existss",
+        message: "Email already existss",
       });
     } else {
       const referralcode = voucher_codes.generate();
@@ -512,7 +512,7 @@ router.post("/driver-activate", (req, res) => {
       ridesignup.findOne({ email: req.body.email,role:req.body.role }).then((user) => {
         if (user) {
           return res.status(400).json({
-            email: "Email already existss",
+            message: "Email already existss",
           });
         }else{
           const ridesignupSchema = new ridesignup(
@@ -968,7 +968,7 @@ router.post("/user-login", (req, res) => {
   }).then((user) => {
     if (!user) {
       return res.status(404).json({
-        email: "Email not found",
+        message: "Email not found",
       });
     }
     bcrypt.compare(password, user.password).then((isMatch) => {
@@ -1016,18 +1016,18 @@ router.post("/user-login", (req, res) => {
               );
             } else {
               return res.status(400).json({
-                notify: "Code is invalid or expired",
+                message: "Code is invalid or expired",
               });
             }
           // }
         } else {
           return res.status(400).json({
-            email: "Your account still not activated",
+            message: "Your account still not activated",
           });
         }
       } else {
         return res.status(404).json({
-          password: "Incorrect password",
+          message: "Incorrect password",
         });
       }
     });

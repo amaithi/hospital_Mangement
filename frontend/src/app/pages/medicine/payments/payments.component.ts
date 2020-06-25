@@ -26,6 +26,7 @@ export class PagePaymentsComponent extends BasePageComponent implements OnInit, 
   dateMode: string;
   totaldata:  any;
   patients: any;
+  hospitalId:any;
   constructor(
     store: Store<IAppState>,
     httpSv: HttpService,
@@ -74,11 +75,11 @@ onChange(result: Date): void { }
   handleDatePanelChange(mode: string): void { }
   ngOnInit() {
     super.ngOnInit();
-
-    this.getData(API_URL+'payments-get', 'payments', 'setLoaded');
-    this.getData(API_URL+'doctors', 'doctors', 'setLoaded');
+    this.hospitalId = JSON.parse(localStorage.getItem('user')).id;
+    this.getData(API_URL+'payments-get/'+this.hospitalId, 'payments', 'setLoaded');
+    this.getData(API_URL+'doctors/'+this.hospitalId, 'doctors', 'setLoaded');
     // this.getData(API_URL+'patient-get', 'patients', 'setLoaded');
-    this.httpSv.getpayment(API_URL+'patient-get/').subscribe(response => {
+    this.httpSv.getpayment(API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
       this.patients = response;
      });
   
@@ -114,7 +115,7 @@ onChange(result: Date): void { }
 
   // init form
   initPaymentForm() {
-    this.httpSv.getpayment(API_URL+'payments-get/').subscribe(response => {
+    this.httpSv.getpayment(API_URL+'payments-get/'+this.hospitalId).subscribe(response => {
       if(response.length !=0){
         this.paymentForm = this.formBuilder.group({
           billNo: [response.length+1],

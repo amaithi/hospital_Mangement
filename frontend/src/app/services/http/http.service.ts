@@ -9,10 +9,10 @@ import { catchError, tap } from 'rxjs/operators';
 })
 export class HttpService {
   constructor(private http: HttpClient) {}
-   hospitalId:any =  JSON.parse(localStorage.getItem('user')).id
+  //  hospitalId:any =  JSON.parse(localStorage.getItem('user')).id
 
   getData(source: string) {
-    return this.http.get(source,this.hospitalId).pipe(
+    return this.http.get(source).pipe(
       tap((res: any) => res),
       catchError(this.handleError)
     );

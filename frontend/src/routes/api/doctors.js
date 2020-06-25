@@ -52,13 +52,26 @@ router.get('/doctors', (req, res) => {
         }
     });
 });
+router.get('/doctors/:id', (req, res) => {
+  doctors.find({hospitalId:req.params.id}).then(user => {
+      if (user) {
+          return res.status(200).send(user);
+          console.log(user, 'uesrezzzzzzz');
+      }
+  });
+});
 router.get("/doctor-profile/:id", (req, res) => {
     var id = req.params.id;
     doctors.findById(id).then((result) => {
       res.json(result);
     });
   });
-  
+  router.get("/doctor-profile", (req, res) => {
+    var id = req.params.id;
+    doctors.findById({}).then((result) => {
+      res.json(result);
+    });
+  });
   router.post("/doctor-update", (req, res) => {
     var id = req.body.id;
     doctors.findById(id).then((result) => {

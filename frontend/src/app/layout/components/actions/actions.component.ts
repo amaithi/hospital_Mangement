@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 
 import {ActivatedRoute, Router} from "@angular/router";
 import { HttpService } from '../../../services/http/http.service';
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'actions',
   templateUrl: './actions.component.html',
@@ -19,6 +19,7 @@ export class ActionsComponent implements OnInit {
   constructor(
     private httpSv: HttpService,
     private router: Router,
+    private location: Location
   ) {
     this.notifications = [];
     this.messages = [];
@@ -51,7 +52,7 @@ export class ActionsComponent implements OnInit {
   }
   logout(){
     localStorage.removeItem('user');
-    this.router.navigateByUrl('/public/sign-in');
+    this.location.back();
   }
   onCloseDropdown() {
     this.closeDropdown.emit(true);

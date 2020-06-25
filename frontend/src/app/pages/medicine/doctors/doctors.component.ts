@@ -24,6 +24,7 @@ export class PageDoctorsComponent extends BasePageComponent implements OnInit, O
   specialists: string[];
    filedata = new FormData();
    doctorlength:any;
+   hospitalId:any;
   newImage:any;
   constructor(
     store: Store<IAppState>,
@@ -62,14 +63,15 @@ export class PageDoctorsComponent extends BasePageComponent implements OnInit, O
   }
 
   ngOnInit() {
+    this.hospitalId =JSON.parse(localStorage.getItem('user')).id;
     super.ngOnInit();
 
-    this.getData(API_URL+"doctors", 'doctors', 'setLoaded');
+    this.getData(API_URL+"doctors/"+this.hospitalId, 'doctors', 'setLoaded');
     this.getData('assets/data/doctors-specialists.json', 'specialists');
     this.getdoctors();
   }
   getdoctors(){
-    this.httpSv.getdoctors(API_URL+'doctors/').subscribe(response => {
+    this.httpSv.getdoctors(API_URL+'doctors/'+this.hospitalId).subscribe(response => {
       if(response.length !=0){ 
         this.doctorlength =  Number(response[response.length-1].doctorId)
       }else{

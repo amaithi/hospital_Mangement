@@ -52,8 +52,8 @@ router.get('/doctors', (req, res) => {
         }
     });
 });
-router.get('/doctors', (req, res) => {
-  doctors.find({}).then(user => {
+router.get('/doctors/:id', (req, res) => {
+  doctors.find({hospitalId:req.params.id}).then(user => {
       if (user) {
           return res.status(200).send(user);
           console.log(user, 'uesrezzzzzzz');

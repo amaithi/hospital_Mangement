@@ -27,6 +27,7 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
   defaultAvatar: string;
   patientId:  any;
   recordId:any;
+  hospitalId:any;
   constructor(
     store: Store<IAppState>,
     httpSv: HttpService,
@@ -76,7 +77,7 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
 
   ngOnInit() {
     super.ngOnInit();
-
+    this.hospitalId = JSON.parse(localStorage.getItem('user')).id;
     this.store.select('patients').subscribe(patients => {
       if (patients && patients.length) {
       
@@ -95,14 +96,14 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
   remove(id: string) {
     // this.store.dispatch(new PatientsActions.Delete(id));
     this.httpSv.updatePatient(API_URL+'patient-delete/',{_id:id}).subscribe(response => {
-      this.getData(API_URL+"patients", 'patients', 'setPatients');
+      this.getData(API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
     });
     
   }
   profile(id: string) {
     // this.store.dispatch(new PatientsActions.Delete(id));
     this.httpSv.updatePatient(API_URL+'patient-delete/',{_id:id}).subscribe(response => {
-      this.getData(API_URL+"patients", 'patients', 'setPatients');
+      this.getData(API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
     });
     
   }
@@ -173,7 +174,7 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
       
       let newPatient: IPatient = form.value;
       this.httpSv.updatePatient(API_URL+'patient-update',form.value).subscribe(response => {
-        this.getData(API_URL+"patients", 'patients', 'setPatients');
+        this.getData(API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
       });
       console.log(newPatient);
       this.store.dispatch(new PatientsActions.Edit(newPatient));

@@ -25,7 +25,14 @@ router.get('/patients', (req, res) => {
         }
     });
 });
-
+router.get('/patients/:id', (req, res) => {
+  patients.find({hospitalId:req.params.id}).then(user => {
+      if (user) {
+          return res.status(200).send(user);
+          console.log(user, 'uesrezzzzzzz');
+      }
+  });
+});
 router.get("/doctor-profile/:id", (req, res) => {
     var id = req.params.id;
     doctors.findById(id).then((result) => {

@@ -24,6 +24,7 @@ export class PagePatientProfileComponent extends BasePageComponent implements On
   changes: boolean;
   billings: any[];
   patientDataid :any;
+  hospitalId:any;
   constructor(
     store: Store<IAppState>,
     httpSv: HttpService,
@@ -76,7 +77,8 @@ export class PagePatientProfileComponent extends BasePageComponent implements On
 
   ngOnInit() {
     super.ngOnInit();
-    this.httpSv.getPatient(API_URL+'patient-get/').subscribe(response => {
+    this.hospitalId =JSON.parse(localStorage.getItem('user')).id;
+    this.httpSv.getPatient(API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
       
     });
     this.getData('assets/data/patient-info.json', 'patientInfo', 'loadedDetect');

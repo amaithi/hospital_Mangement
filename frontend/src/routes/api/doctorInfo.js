@@ -26,5 +26,13 @@ router.get('/doctor-info', (req, res) => {
     });
 });
 
+router.get('/doctor-info/:id', (req, res) => {
+    doctorInfo.find({hospitalId:req.params.id}).then(user => {
+        if (user) {
+            return res.status(200).send(user);
+            console.log(user, 'uesrezzzzzzz');
+        }
+    });
+});
 
 module.exports = router;
