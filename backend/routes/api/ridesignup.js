@@ -1034,6 +1034,16 @@ router.post("/user-login", (req, res) => {
   });
 });
 
+router.get("/account-get", (req, res) => {
+  ridesignup.find({ '_id':req.body._id}).then(user => {
+    if (user) {
+      return res.status(200).send(user);
+      console.log(user, 'uesrezzzzzzz');
+    }
+
+  });
+});
+
 router.post('/wakaride-login1', (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
   if (!isValid) {

@@ -58,7 +58,7 @@ router.get('/patients-status-approved', (req, res) => {
   });
 });
 router.get('/patients-status-approved/:id', (req, res) => {
-  patients.find({status:'approved'}).then(user => {
+  patients.find({hospitalId:req.params.id,status:'approved'}).then(user => {
       if (user) {
           return res.status(200).send(user);
           console.log(user, 'uesrezzzzzzz');

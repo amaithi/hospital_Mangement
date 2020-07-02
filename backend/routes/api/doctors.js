@@ -66,7 +66,18 @@ router.get("/doctor-profile/:id", (req, res) => {
       res.json(result);
     });
   });
-  
+  router.post("/doctor-delete", (req, res) => {
+    doctors.deleteOne({
+        _id: req.body._id
+      }).then(user => {
+        if (user) {
+          return res.status(200).json({
+            message: 'Doctor Profile deleted successfully. Refreshing data...',
+            success: true
+          })
+        }
+      });
+  });
   router.post("/doctor-update", (req, res) => {
     var id = req.body.id;
     console.log(req.body);
