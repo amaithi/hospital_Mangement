@@ -80,14 +80,14 @@
       </li> -->
 
       <li>
-        <a href="#" (click)="goTo($event, 'settings')" class="align-items-center">
-          <span class="icon icofont-ui-settings"></span>
-          Settings
+        <a href="#" (click)="goTo($event, 'edit-account')" class="align-items-center">
+          <span class="icon icofont-ui-home"></span>
+          Edit account
         </a>
       </li>
 
       <li>
-        <a  (click)="logout()" class="align-items-center">
+        <a  (click)="goTo($event, 'sign-in', '../public/')" class="align-items-center">
           <span class="icon icofont-logout"></span>
           Log Out
         </a>

@@ -62,9 +62,12 @@ export class ActionsComponent implements OnInit {
     event.preventDefault();
 
     this.onCloseDropdown();
-
+   // localStorage.removeItem('user');
     setTimeout(() => {
-      this.router.navigate([layout ? layout : this.layout, link]);
+      if(layout){
+        localStorage.removeItem('user')
+      }
+      this.router.navigate([layout ? layout  : this.layout, link]);
     });
   }
 }

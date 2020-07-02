@@ -5,7 +5,7 @@ import { IAppState } from '../../../../interfaces/app-state';
 import { HttpService } from '../../../../services/http/http.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IOption } from '../../../../ui/interfaces/option';
-
+const API_URL = 'http://localhost:5001/api/';
 @Component({
   selector: 'page-edit-account',
   templateUrl: './edit-account.component.html',
@@ -19,7 +19,9 @@ export class PageEditAccountComponent extends BasePageComponent implements OnIni
   currentAvatar: string | ArrayBuffer;
   defaultAvatar: string;
   changes: boolean;
-
+  hospitalId:any=[];
+  userData:any=[];
+  
   constructor(
     store: Store<IAppState>,
     httpSv: HttpService,
@@ -71,7 +73,11 @@ export class PageEditAccountComponent extends BasePageComponent implements OnIni
 
   ngOnInit() {
     super.ngOnInit();
-
+   // this.hospitalId =JSON.parse(localStorage.getItem('user')).id;
+    this.hospitalId ='';
+    this.httpSv.getData(API_URL+'account-get/'+this.hospitalId).subscribe(response => {
+      this.userData= response.length;
+    });
     this.getData('assets/data/account-data.json', 'userInfo', 'loadedDetect');
   }
 
