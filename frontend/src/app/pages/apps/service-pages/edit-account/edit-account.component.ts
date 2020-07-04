@@ -5,7 +5,7 @@ import { IAppState } from '../../../../interfaces/app-state';
 import { HttpService } from '../../../../services/http/http.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IOption } from '../../../../ui/interfaces/option';
-const API_URL = 'http://localhost:5001/api/';
+import { environment } from '../../../../env';
 @Component({
   selector: 'page-edit-account',
   templateUrl: './edit-account.component.html',
@@ -21,7 +21,7 @@ export class PageEditAccountComponent extends BasePageComponent implements OnIni
   changes: boolean;
   hospitalId:any=[];
   userData:any=[];
-  
+  public API_URL:any = environment.backend;
   constructor(
     store: Store<IAppState>,
     httpSv: HttpService,
@@ -73,48 +73,70 @@ export class PageEditAccountComponent extends BasePageComponent implements OnIni
 
   ngOnInit() {
     super.ngOnInit();
-   // this.hospitalId =JSON.parse(localStorage.getItem('user')).id;
-    this.hospitalId ='';
-    this.httpSv.getData(API_URL+'account-get/'+this.hospitalId).subscribe(response => {
-      this.userData= response.length;
+    this.hospitalId =JSON.parse(localStorage.getItem('user')).id;
+    this.userForm = this.formBuilder.group({
+      img: [this.currentAvatar],
+      username: ['', Validators.required],
+      alternumber: ['', Validators.required],
+      ownername: ['', Validators.required],
+      number: ['', Validators.required],
+      address: ['', Validators.required]
+    
     });
-    this.getData('assets/data/account-data.json', 'userInfo', 'loadedDetect');
+   // this.hospitalId ='';
+    this.httpSv.getData(this.API_URL+'account-get/'+this.hospitalId).subscribe(response => {
+      this.userData= response[0];
+      this.userForm.get('alternumber').patchValue(this.userData.alternumber);
+      this.userForm.get('ownername').patchValue(this.userData.ownername);
+      this.userForm.get('number').patchValue(this.userData.number);
+      this.userForm.get('address').patchValue(this.userData.address);
+      this.userForm.get('username').patchValue(this.userData.username);
+    });
+   
+    // this.getData('account-get/'+this.hospitalId, 'userInfo', 'loadedDetect');
   }
-
+  get f() {
+    return this.userData.controls;
+  }
   ngOnDestroy() {
     super.ngOnDestroy();
   }
 
-  loadedDetect() {
-    this.setLoaded();
+  // loadedDetect() {
+  //   this.setLoaded();
 
-    this.currentAvatar = this.userInfo.img;
-    this.inituserForm(this.userInfo);
-  }
+  //   this.inituserForm(this.userInfo);
+  // }
 
   // init form
   inituserForm(data: any) {
+    setTimeout(() => {
     this.userForm = this.formBuilder.group({
       img: [this.currentAvatar],
-      firstName: [data.firstName, Validators.required],
-      lastName: [data.lastName, Validators.required],
-      number: [data.number, Validators.required],
-      address: [data.address, Validators.required],
-      gender: [data.gender, Validators.required],
-      age: [data.age, Validators.required],
-      lastVisit: [data.lastVisit, Validators.required],
-      status: [data.status, Validators.required]
+      username: ['', Validators.required],
+      alternumber: [ '', Validators.required],
+      ownername: ['', Validators.required],
+      number: ['', Validators.required],
+      address: ['', Validators.required]
+    
     });
 
     // detect form changes
-    this.userForm.valueChanges.subscribe(() => {
-      this.changes = true;
-    });
+    // this.userForm.valueChanges.subscribe(() => {
+    //   this.changes = true;
+    // });
+  },1);
   }
 
   // save form data
   saveData(form: FormGroup) {
     if (form.valid) {
+      
+
+      this.httpSv.postData(this.API_URL+'account-update/',form.value).subscribe(response => {
+        this.userData= response[0];
+        this.inituserForm(this.userData);
+      });
       this.userInfo = form.value;
       this.changes = false;
     }

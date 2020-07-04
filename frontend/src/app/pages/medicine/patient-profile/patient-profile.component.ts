@@ -6,7 +6,7 @@ import { BasePageComponent } from '../../base-page';
 import { IAppState } from '../../../interfaces/app-state';
 import { HttpService } from '../../../services/http/http.service';
 import { IOption } from '../../../ui/interfaces/option';
-const API_URL = 'http://localhost:5001/api/';
+import { environment } from '../../../env';
 import { DatePipe } from '@angular/common';
 @Component({
   selector: 'page-patient-profile',
@@ -24,6 +24,7 @@ export class PagePatientProfileComponent extends BasePageComponent implements On
   changes: boolean;
   billings: any[];
   patientDataid :any;
+  public API_URL:any = environment.backend;
   hospitalId:any;
   constructor(
     store: Store<IAppState>,
@@ -78,7 +79,7 @@ export class PagePatientProfileComponent extends BasePageComponent implements On
   ngOnInit() {
     super.ngOnInit();
     this.hospitalId =JSON.parse(localStorage.getItem('user')).id;
-    this.httpSv.getPatient(API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
+    this.httpSv.getPatient(this.API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
       
     });
     this.getData('assets/data/patient-info.json', 'patientInfo', 'loadedDetect');
@@ -126,7 +127,7 @@ export class PagePatientProfileComponent extends BasePageComponent implements On
       this.changes = false;
       // form.value.lastVisit = this.datePipe.transform(new Date(), 'dd MMM yyyy');
       // form.value.id=
-      this.httpSv.profileupdate(API_URL+'patient-update/',form.value).subscribe(response => {
+      this.httpSv.profileupdate(this.API_URL+'patient-update/',form.value).subscribe(response => {
         console.log(response);
       });
     }

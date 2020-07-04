@@ -16,7 +16,7 @@ import * as SettingsActions from '../../store/actions/app-settings.actions';
 
 import { DatePipe } from '@angular/common';
 import { AnyARecord } from 'dns';
-const API_URL = 'http://localhost:5001/api/';
+import { environment } from '../../../../src/app/env';
 
 @Component({
   selector: 'vertical-layout',
@@ -34,6 +34,7 @@ export class VerticalLayoutComponent extends BaseLayoutComponent implements OnIn
   patientcount: any;
   doctorlength:any;
   hospitalId: any;
+  public API_URL:any = environment.backend;
   constructor(
     store: Store<IAppState>,
     fb: FormBuilder,
@@ -63,7 +64,7 @@ export class VerticalLayoutComponent extends BaseLayoutComponent implements OnIn
     super.ngOnInit();
     this.getdoctors();
     this.hospitalId =JSON.parse(localStorage.getItem('user')).id;
-    this.httpSv.getPatient(API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
+    this.httpSv.getPatient(this.API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
       if(response.length != 0){
         this.patientcount = Number(response[response.length-1].id)+1;
       }else{
@@ -73,7 +74,7 @@ export class VerticalLayoutComponent extends BaseLayoutComponent implements OnIn
     this.store.dispatch(new SettingsActions.Update({ layout: 'vertical' }));
   }
   getdoctors(){
-    // this.httpSv.getdoctors(API_URL+'doctor-add/').subscribe(response => {
+    // this.httpSv.getdoctors(this.API_URL+'doctor-add/').subscribe(response => {
     //   this.doctorlength = response.length
     //   });
   }
@@ -131,8 +132,8 @@ export class VerticalLayoutComponent extends BaseLayoutComponent implements OnIn
       newPatient.label = String(this.patientcount) +' | '+newPatient.name;
       newPatient.lastVisit = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       newPatient.hospitalId = JSON.parse(localStorage.getItem('user')).id;
-      this.httpSv.addPatient(API_URL+'patient-add/',newPatient).subscribe(response => {
-        this.httpSv.getPatient(API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
+      this.httpSv.addPatient(this.API_URL+'patient-add/',newPatient).subscribe(response => {
+        this.httpSv.getPatient(this.API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
           this.patientcount = Number(response[response.length-1].id)+1;
         });
       });

@@ -12,7 +12,7 @@ import { IMenuItem } from '../../interfaces/main-menu';
 import * as SettingsActions from '../../store/actions/app-settings.actions';
 import * as PatientsActions from '../../store/actions/patients.actions';
 import { IPatient } from '../../interfaces/patient';
-const API_URL = 'http://localhost:5001/api/';
+import { environment } from '../../../../src/app/env';
 
 @Component({
   selector: 'base-layout',
@@ -28,6 +28,7 @@ export class BaseLayoutComponent implements OnInit {
   scrolled: boolean;
   patients: IPatient[];
   hospitalId: any;
+  public API_URL:any = environment.backend;
   constructor(
     public store: Store<IAppState>,
     public fb: FormBuilder,
@@ -52,7 +53,7 @@ export class BaseLayoutComponent implements OnInit {
     });
     this.hospitalId =JSON.parse(localStorage.getItem('user')).id;
     this.getSearchData('assets/data/menu.json');
-    this.getData(API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
+    this.getData(this.API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
     this.initSearchForm();
     this.scrollToTop();
   }

@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Content } from '../../../ui/interfaces/modal';
 import { TCModalService } from '../../../ui/services/modal/modal.service';
 import { IUser } from '../../../ui/interfaces/user';
-const API_URL = 'http://localhost:5001/api/';
+import { environment } from '../../../env';
 import { DatePipe } from '@angular/common';
 // import { IMyOptions } from 'ng-uikit-pro-standard';
 import * as $ from 'jquery'; 
@@ -26,6 +26,7 @@ export class PagePaymentsComponent extends BasePageComponent implements OnInit, 
   dateMode: string;
   totaldata:  any;
   patients: any;
+  public API_URL:any = environment.backend;
   hospitalId:any;
   constructor(
     store: Store<IAppState>,
@@ -76,10 +77,10 @@ onChange(result: Date): void { }
   ngOnInit() {
     super.ngOnInit();
     this.hospitalId = JSON.parse(localStorage.getItem('user')).id;
-    this.getData(API_URL+'payments-get/'+this.hospitalId, 'payments', 'setLoaded');
-    this.getData(API_URL+'doctors/'+this.hospitalId, 'doctors', 'setLoaded');
-    // this.getData(API_URL+'patient-get', 'patients', 'setLoaded');
-    this.httpSv.getpayment(API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
+    this.getData(this.API_URL+'payments-get/'+this.hospitalId, 'payments', 'setLoaded');
+    this.getData(this.API_URL+'doctors/'+this.hospitalId, 'doctors', 'setLoaded');
+    // this.getData(this.API_URL+'patient-get', 'patients', 'setLoaded');
+    this.httpSv.getpayment(this.API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
       this.patients = response;
      });
   
@@ -115,7 +116,7 @@ onChange(result: Date): void { }
 
   // init form
   initPaymentForm() {
-    this.httpSv.getpayment(API_URL+'payments-get/'+this.hospitalId).subscribe(response => {
+    this.httpSv.getpayment(this.API_URL+'payments-get/'+this.hospitalId).subscribe(response => {
       if(response.length !=0){
         this.paymentForm = this.formBuilder.group({
           billNo: [response.length+1],
@@ -164,9 +165,9 @@ onChange(result: Date): void { }
       req.doctorId = form.value.doctor._id;
       req.doctor = form.value.doctor.name;
       req.hospitalId = JSON.parse(localStorage.getItem('user')).id;
-      this.httpSv.addPayment(API_URL+'payments-add/',req).subscribe(response => {
+      this.httpSv.addPayment(this.API_URL+'payments-add/',req).subscribe(response => {
         if(response.status == 200){
-          this.httpSv.sendpaymentsms(API_URL+'payment-sms/',req).subscribe(res => {
+          this.httpSv.sendpaymentsms(this.API_URL+'payment-sms/',req).subscribe(res => {
             console.log(res)
           });
         }

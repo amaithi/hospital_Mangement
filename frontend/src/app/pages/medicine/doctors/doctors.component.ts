@@ -9,7 +9,7 @@ import { HttpService } from '../../../services/http/http.service';
 import { Content } from '../../../ui/interfaces/modal';
 import { TCModalService } from '../../../ui/services/modal/modal.service';
 import { IOption } from '../../../ui/interfaces/option';
-const API_URL = 'http://localhost:5001/api/';
+import { environment } from '../../../env';
 @Component({
   selector: 'page-doctors',
   templateUrl: './doctors.component.html',
@@ -25,6 +25,7 @@ export class PageDoctorsComponent extends BasePageComponent implements OnInit, O
    filedata = new FormData();
    doctorlength:any;
    hospitalId:any;
+   public API_URL:any = environment.backend;
   newImage:any;
   constructor(
     store: Store<IAppState>,
@@ -66,12 +67,12 @@ export class PageDoctorsComponent extends BasePageComponent implements OnInit, O
     this.hospitalId =JSON.parse(localStorage.getItem('user')).id;
     super.ngOnInit();
 
-    this.getData(API_URL+"doctors/"+this.hospitalId, 'doctors', 'setLoaded');
+    this.getData(this.API_URL+"doctors/"+this.hospitalId, 'doctors', 'setLoaded');
     this.getData('assets/data/doctors-specialists.json', 'specialists');
     this.getdoctors();
   }
   getdoctors(){
-    this.httpSv.getdoctors(API_URL+'doctors/'+this.hospitalId).subscribe(response => {
+    this.httpSv.getdoctors(this.API_URL+'doctors/'+this.hospitalId).subscribe(response => {
       if(response.length !=0){ 
         this.doctorlength =  Number(response[response.length-1].doctorId)
       }else{
@@ -128,7 +129,7 @@ export class PageDoctorsComponent extends BasePageComponent implements OnInit, O
       addreq.label = form.value.name +' | '+ this.doctorlength +1;
       addreq.hospitalId = JSON.parse(localStorage.getItem('user')).id;
       
-      this.httpSv.addDoctorProf(API_URL+'doctor-add/',addreq).subscribe(response => {
+      this.httpSv.addDoctorProf(this.API_URL+'doctor-add/',addreq).subscribe(response => {
       // delete form.value.gender;
       this.getdoctors();
       addreq._id = response._id;

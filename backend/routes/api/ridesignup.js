@@ -14,6 +14,7 @@ const Emailtemplates = require("../../models/emailtemplate");
 var voucher_codes = require('coupon-code');
 const validateRiderInput = require("../../validation/rider");
 const Member = require('../../models/member');
+const { id_ID } = require('ng-zorro-antd');
 // const { func } = require('prop-types');
 router.get('/test1', (req, res) => {
     res.json({
@@ -121,6 +122,41 @@ router.post("/user-delete", (req, res) => {
 
 
 // })
+router.post("/account-update", (req, res) => {
+  var id = req.body.id;
+  console.log(req.body);
+  // doctors.findById(id).then((result) => {
+  //     const doctorsSchema = new doctors({
+  //         img:    req.body.img,
+  //         name:req.body.name,
+  //         first:  req.body.name,
+  //         last:  req.body.lastName,
+  //         role:   req.body.role,
+  //         gender: req.body.gender,
+  //         address:    req.body.address,
+  //         doctorId: req.body.doctorId,
+  //         label:    req.body.label,
+  //         profileLink:    req.body.profileLink,
+  //         social: req.body.social
+  //     });
+  ridesignup.findOneAndUpdate({ id:id},{ $set: req.body}).then((user,err) => {
+    if(err) return err;
+    return res.status(200).json({
+      message: 'User Data added successfully. Refreshing data...',
+      success: true
+    });
+  })
+  // ridesignup.findByIdAndUpdate(id, req.body, {
+  //         new: true
+  //       }, function (err, user) {
+  //         return res.status(200).json({
+  //           message: 'Profile update Succesfully',
+  //           success: true
+  //         });
+  //       });
+  // });
+});
+
 router.post("/rider-details-update", (req, res) => {
   const { errors, isValid } = validateRiderInput(req.body, "register");
   if (!isValid) {
@@ -1034,8 +1070,9 @@ router.post("/user-login", (req, res) => {
   });
 });
 
-router.get("/account-get", (req, res) => {
-  ridesignup.find({ '_id':req.body._id}).then(user => {
+router.get("/account-get/:id", (req, res) => {
+  var id = req.params.id;
+  ridesignup.find({ '_id':id}).then(user => {
     if (user) {
       return res.status(200).send(user);
       console.log(user, 'uesrezzzzzzz');

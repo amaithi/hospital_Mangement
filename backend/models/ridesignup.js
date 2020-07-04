@@ -38,7 +38,11 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  phonenumber: {
+  ownername:{
+    type: String,
+    required: true,
+  },
+  number: {
     type: String,
     default: "",
   },
@@ -46,7 +50,11 @@ const UserSchema = new Schema({
     type: String,
     default: "",
   },
-  address2: {
+  address: {
+    type: String,
+    default: "",
+  },
+  alternumber:{
     type: String,
     default: "",
   },

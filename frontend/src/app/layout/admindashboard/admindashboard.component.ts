@@ -6,7 +6,7 @@ import { BasePageComponent } from '../../pages/base-page';
 import { IAppState } from '../../interfaces/app-state';
 import { HttpService } from '../../services/http/http.service';
 import {ActivatedRoute, Router} from "@angular/router";
-const API_URL = 'http://localhost:5001/api/';
+import { environment } from '../../../app/env';
 import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-admindashboard',
@@ -43,6 +43,7 @@ export class AdmindashboardComponent extends BasePageComponent implements OnInit
   weekrevenue: any;
   monthrevenue: any;
   hospitalId: any;
+  public API_URL:any = environment.backend;
   constructor(
     store: Store<IAppState>,
     httpSv: HttpService,
@@ -90,14 +91,14 @@ export class AdmindashboardComponent extends BasePageComponent implements OnInit
     }
     var parseData = JSON.parse(data);
     this.profileName =parseData.username;
-    //  this.getData(API_URL+'listAppointment', 'appointments', 'setLoaded');
+    //  this.getData(this.API_URL+'listAppointment', 'appointments', 'setLoaded');
    
-    this.getData(API_URL+'payments-get/'+this.hospitalId, 'payments', 'setLoaded');
-    this.httpSv.lastappintment(API_URL+'listAppointment/'+this.hospitalId).subscribe(response => {
+    this.getData(this.API_URL+'payments-get/'+this.hospitalId, 'payments', 'setLoaded');
+    this.httpSv.lastappintment(this.API_URL+'listAppointment/'+this.hospitalId).subscribe(response => {
       this.lastappoint= response.slice(Math.max(response.length - 10, 0));
     
     });
-    this.httpSv.getPatient(API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
+    this.httpSv.getPatient(this.API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
       this.currentyear = response.filter(function(val,key){return (val.lastVisit.search('2020') !=-1)});
       this.prevyear = response.filter(function(val,key){return (val.lastVisit.search('2019') !=-1)})
       this.pievalue1 = response.filter(function(val,key){return (val.age<10 && 0<val.age )}).length;
@@ -110,17 +111,17 @@ export class AdmindashboardComponent extends BasePageComponent implements OnInit
       this.setPAOptions(this.pievalue1,this.pievalue2,this.pievalue3,this.pievalue4,this.pievalue5);
       this.setHSOptions(this.prevyear,this.currentyear);
     });
-    this.httpSv.pendingPatient(API_URL+'patients-status-pending/'+this.hospitalId).subscribe(response => {
+    this.httpSv.pendingPatient(this.API_URL+'patients-status-pending/'+this.hospitalId).subscribe(response => {
       this.patientpending= response.length;
     });
-    this.httpSv.approvepatient(API_URL+'patients-status-approved/'+this.hospitalId).subscribe(response => {
+    this.httpSv.approvepatient(this.API_URL+'patients-status-approved/'+this.hospitalId).subscribe(response => {
       this.patientapprove= response.length;
     });
-    this.httpSv.getdoctors(API_URL+'doctors/'+this.hospitalId).subscribe(response => {
+    this.httpSv.getdoctors(this.API_URL+'doctors/'+this.hospitalId).subscribe(response => {
       // this.setDOptions(response);
       this.setDOptions(response);
     });
-    this.httpSv.getpayment(API_URL+'payments-get/'+this.hospitalId).subscribe(response => {
+    this.httpSv.getpayment(this.API_URL+'payments-get/'+this.hospitalId).subscribe(response => {
       this.totalrevenue = response.reduce((a, {total}) => a + Number(total), 0);
      var filterWeek = []
      var filtermonth = [];

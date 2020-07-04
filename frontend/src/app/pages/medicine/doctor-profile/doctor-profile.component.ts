@@ -8,7 +8,7 @@ import { IAppState } from '../../../interfaces/app-state';
 import { HttpService } from '../../../services/http/http.service';
 import { IOption } from '../../../ui/interfaces/option';
 import { IUser } from '../../../ui/interfaces/user';
-const API_URL = 'http://localhost:5001/api/';
+import { environment } from '../../../env';
 import { ActivatedRoute, Params } from '@angular/router';
 
 
@@ -29,6 +29,7 @@ export class PageDoctorProfileComponent extends BasePageComponent implements OnI
   specialists: string[];
   changes: boolean;
   currentId:  any;
+  public API_URL:any = environment.backend;
   patientsOptions: EChartOption;
   constructor(
     store: Store<IAppState>,
@@ -74,7 +75,7 @@ export class PageDoctorProfileComponent extends BasePageComponent implements OnI
     this.route.params.subscribe(res => {
       super.ngOnInit();
       console.log(this.doctorInfo1);
-      // this.httpSv.getData(API_URL+'doctor-profile/'+res.id).subscribe(res1 => {
+      // this.httpSv.getData(this.API_URL+'doctor-profile/'+res.id).subscribe(res1 => {
       //   console.log(res1);
       //   this.doctorInfo = res1;
       //   this.initDoctorForm(res1);
@@ -87,7 +88,7 @@ export class PageDoctorProfileComponent extends BasePageComponent implements OnI
       //   });
       // });
      this.currentId = res.id;
-     this.getData(API_URL+'doctor-profile/'+res.id, 'doctorInfo', 'loadedDetect')
+     this.getData(this.API_URL+'doctor-profile/'+res.id, 'doctorInfo', 'loadedDetect')
       this.getData('assets/data/doctors-specialists.json', 'specialists');
       // this.getData('assets/data/doctor-timeline.json', 'doctorTimeline');
       this.setPOptions();
@@ -160,10 +161,10 @@ export class PageDoctorProfileComponent extends BasePageComponent implements OnI
       var saveReq = form.value;
       saveReq.id = this.currentId;
       saveReq.img = this.currentAvatar;
-      this.httpSv.saveProf(API_URL+'doctor-update/',saveReq).subscribe(response => {
+      this.httpSv.saveProf(this.API_URL+'doctor-update/',saveReq).subscribe(response => {
         console.log(response)
       });
-    //  this.getData(API_URL+'doctor-update/'+saveReq, 'doctorInfo', 'loadedDetect')
+    //  this.getData(this.API_URL+'doctor-update/'+saveReq, 'doctorInfo', 'loadedDetect')
       this.doctorInfo = form.value;
       this.changes = false;
     }

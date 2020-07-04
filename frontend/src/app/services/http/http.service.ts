@@ -17,6 +17,12 @@ export class HttpService {
       catchError(this.handleError)
     );
   }
+  postData(source: string,req) {
+    return this.http.post(source,req).pipe(
+      tap((res: any) => res),
+      catchError(this.handleError)
+    );
+  };
   getPatient(source: string) {
     return this.http.get(source).pipe(
       tap((res: any) => res),

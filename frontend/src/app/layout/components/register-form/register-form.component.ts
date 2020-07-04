@@ -5,7 +5,7 @@ import { IAppState } from '../../../interfaces/app-state';
 import { HttpService } from '../../../services/http/http.service';
 import { TCModalService } from '../../../ui/services/modal/modal.service';
 import { IUser } from '../../../ui/interfaces/user';
-const API_URL = 'http://localhost:5001/api/';
+import { environment } from '../../../env';
 import { BasePageComponent } from '../../../pages/base-page';
 import { NotificationService } from '../notification/notification.service';
 @Component({
@@ -17,7 +17,7 @@ export class RegisterFormComponent extends BasePageComponent implements OnInit, 
   registerForm: FormGroup;
   @ViewChild('modalBody', { static: true }) modalBody: ElementRef<any>;
   @ViewChild('modalFooter', { static: true }) modalFooter: ElementRef<any>;
-  
+  public API_URL:any = environment.backend;
   
   constructor(
     store: Store<IAppState>,
@@ -40,7 +40,7 @@ export class RegisterFormComponent extends BasePageComponent implements OnInit, 
   
   signup(){
     if(this.registerForm.valid){
-      this.httpSv.signupAPI(API_URL+'user-save/',this.registerForm.value).subscribe(response => {
+      this.httpSv.signupAPI(this.API_URL+'user-save/',this.registerForm.value).subscribe(response => {
         console.log(response)
         this.notifyService.showSuccess('', response.message);
       }, (err) => {

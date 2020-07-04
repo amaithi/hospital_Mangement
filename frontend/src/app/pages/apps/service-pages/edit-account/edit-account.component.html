@@ -1,7 +1,10 @@
-<div class="row justify-content-center" *ngIf="userInfo">
+<div class="row justify-content-center" *ngIf="userData">
   <div class="col col-12 col-xl-8">
+
+
+    
     <form
-      [formGroup]="userForm"
+    [formGroup]="userForm"
       novalidate
       class="mb-4"
       (ngSubmit)="saveData(userForm)"
@@ -20,17 +23,17 @@
             [outline]="true"
             (click)="fileInput.click()"
           >
-            Change photo
+            Change Logo
           </button>
         </div>
       </tc-form-group>
 
       <tc-form-group>
-        <tc-form-label>First name</tc-form-label>
-        <tc-input [placeholder]="'First name'" formControlName="firstName"></tc-input>
+        <tc-form-label>Hospital Name :  {{userData.username}}</tc-form-label>
+       
       </tc-form-group>
 
-      <tc-form-group>
+      <!-- <tc-form-group>
         <tc-form-label>Last name</tc-form-label>
         <tc-input [placeholder]="'Last name'" formControlName="lastName"></tc-input>
       </tc-form-group>
@@ -49,51 +52,47 @@
             <tc-select [placeholder]="'Gender'" formControlName="gender" [options]="gender"></tc-select>
           </tc-form-group>
         </div>
-      </div>
-
+      </div> -->
+      <tc-form-group>
+        <tc-form-label>Owner Name</tc-form-label>
+        <tc-input [placeholder]="'Owner Name'" formControlName="ownername"></tc-input>
+      </tc-form-group>
       <tc-form-group>
         <tc-form-label>Phone number</tc-form-label>
-        <tc-input [placeholder]="'Number'" formControlName="number"></tc-input>
+        <tc-input [placeholder]="'Phone number'" formControlName="number"></tc-input>
       </tc-form-group>
-
+      <tc-form-group>
+        <tc-form-label>Alter Number</tc-form-label>
+        <tc-input [placeholder]="'Alter Number'" formControlName="alternumber"></tc-input>
+      </tc-form-group>
       <tc-form-group>
         <tc-form-label>Address</tc-form-label>
         <tc-textarea [placeholder]="'Address'" formControlName="address"></tc-textarea>
       </tc-form-group>
 
-      <tc-form-group>
+      <!-- <tc-form-group>
         <tc-form-label>Last visit</tc-form-label>
         <tc-input [placeholder]="'Last visit'" formControlName="lastVisit" [readonly]="true"></tc-input>
-      </tc-form-group>
+      </tc-form-group> -->
 
-      <tc-form-group>
+      <!-- <tc-form-group>
         <tc-form-label>Status</tc-form-label>
         <tc-select [placeholder]="'Status'" formControlName="status" [options]="status"></tc-select>
-      </tc-form-group>
+      </tc-form-group> -->
 
       <div class="row">
         <div class="col">
-          <button tc-button [view]="'success'" [disabled]="!changes || userForm.invalid">
+          <button tc-button [view]="'success'" >
             Save changes
           </button>
         </div>
-        <div class="col text-right">
-          <button
-            tc-button
-            [type]="'button'"
-            [view]="'error'"
-            [outline]="true"
-          >
-            <span class="d-none d-sm-block">Delete account</span>
-            <span class="d-sm-none">Delete</span>
-          </button>
-        </div>
+       
       </div>
     </form>
 
     <hr>
 
-    <h4>Change password</h4>
+    <!-- <h4>Change password</h4>
 
     <form novalidate>
       <div class="row">
@@ -123,6 +122,6 @@
       <button tc-button [view]="'default'" [outline]="true" [type]="'button'">
         Change password
       </button>
-    </form>
+    </form> -->
   </div>
 </div>

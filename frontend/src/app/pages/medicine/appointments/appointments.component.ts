@@ -6,7 +6,7 @@ import { IAppState } from '../../../interfaces/app-state';
 import { HttpService } from '../../../services/http/http.service';
 import { TCModalService } from '../../../ui/services/modal/modal.service';
 import { IUser } from '../../../ui/interfaces/user';
-const API_URL = 'http://localhost:5001/api/';
+import { environment } from '../../../env';
 import { IgxDatePickerComponent } from 'igniteui-angular';
 import { DatePipe } from '@angular/common';
 @Component({
@@ -30,6 +30,7 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
   dateMode: string;
   name: any;
   tokenNo:any;
+  public API_URL:any = environment.backend;
   hospitalId:any;
   constructor(
     store: Store<IAppState>,
@@ -65,11 +66,11 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
   ngOnInit() {
     super.ngOnInit();
     this.hospitalId =JSON.parse(localStorage.getItem('user')).id;
-    this.getData(API_URL+"listAppointment/"+this.hospitalId, 'appointments', 'setLoaded');
-    this.getData(API_URL+"doctors/"+this.hospitalId, 'doctors', 'setLoaded');
-    this.getData(API_URL+"patient-get/"+this.hospitalId, 'name','setLoaded');
+    this.getData(this.API_URL+"listAppointment/"+this.hospitalId, 'appointments', 'setLoaded');
+    this.getData(this.API_URL+"doctors/"+this.hospitalId, 'doctors', 'setLoaded');
+    this.getData(this.API_URL+"patient-get/"+this.hospitalId, 'name','setLoaded');
   // patient details gets
-    this.httpSv.getpayment(API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
+    this.httpSv.getpayment(this.API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
       this.name = response;
      });
     this.getData('assets/data/doctors-specialists.json', 'injury','setLoaded');
@@ -146,7 +147,7 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
   // remove appointment
   remove(tableRow: any) {
     this.appointments = this.appointments.filter(row => row !== tableRow);
-    this.httpSv.deleteAppointment(API_URL+'appointment-delete/',{_id:tableRow._id}).subscribe(response => {
+    this.httpSv.deleteAppointment(this.API_URL+'appointment-delete/',{_id:tableRow._id}).subscribe(response => {
       console.log(response)
     });
 
@@ -172,11 +173,11 @@ export class PageAppointmentsComponent extends BasePageComponent implements OnIn
       req.patientId = req.name._id;
       req.name = req.name.name;
       req.tokenno =  this.tokenNo;
-      // this.httpSv.getData(API_URL+'listAppointment/').subscribe(response => {
+      // this.httpSv.getData(this.API_URL+'listAppointment/').subscribe(response => {
         // req.tokenNo =  response.length+1;
-        this.httpSv.addDoctorProf(API_URL+'appointment-update/',req).subscribe(response => {
+        this.httpSv.addDoctorProf(this.API_URL+'appointment-update/',req).subscribe(response => {
           console.log(response);
-          this.getData(API_URL+"listAppointment/"+this.hospitalId, 'appointments', 'setLoaded');
+          this.getData(this.API_URL+"listAppointment/"+this.hospitalId, 'appointments', 'setLoaded');
           let newAppointment: any = form.value;
   
           newAppointment.fromTo = `${form.value.from} - ${form.value.to}`;

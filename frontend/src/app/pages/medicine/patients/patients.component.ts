@@ -12,7 +12,7 @@ import { Content } from '../../../ui/interfaces/modal';
 import * as PatientsActions from '../../../store/actions/patients.actions';
 import { TCModalService } from '../../../ui/services/modal/modal.service';
 import { DatePipe } from '@angular/common';
-const API_URL = 'http://localhost:5001/api/';
+import { environment } from '../../../env';
 @Component({
   selector: 'page-patients',
   templateUrl: './patients.component.html',
@@ -28,6 +28,7 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
   patientId:  any;
   recordId:any;
   hospitalId:any;
+  public API_URL:any = environment.backend;
   constructor(
     store: Store<IAppState>,
     httpSv: HttpService,
@@ -84,6 +85,8 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
         this.patients = patients;
 
         !this.pageData.loaded ? this.setLoaded() : null;
+      }else{
+        this.patients =[];
       }
     });
   }
@@ -95,15 +98,15 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
   // delete patient
   remove(id: string) {
     // this.store.dispatch(new PatientsActions.Delete(id));
-    this.httpSv.updatePatient(API_URL+'patient-delete/',{_id:id}).subscribe(response => {
-      this.getData(API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
+    this.httpSv.updatePatient(this.API_URL+'patient-delete/',{_id:id}).subscribe(response => {
+      this.getData(this.API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
     });
     
   }
   profile(id: string) {
     // this.store.dispatch(new PatientsActions.Delete(id));
-    this.httpSv.updatePatient(API_URL+'patient-delete/',{_id:id}).subscribe(response => {
-      this.getData(API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
+    this.httpSv.updatePatient(this.API_URL+'patient-delete/',{_id:id}).subscribe(response => {
+      this.getData(this.API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
     });
     
   }
@@ -173,8 +176,8 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
       form.value.img = this.currentAvatar;
       
       let newPatient: IPatient = form.value;
-      this.httpSv.updatePatient(API_URL+'patient-update',form.value).subscribe(response => {
-        this.getData(API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
+      this.httpSv.updatePatient(this.API_URL+'patient-update',form.value).subscribe(response => {
+        this.getData(this.API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
       });
       console.log(newPatient);
       this.store.dispatch(new PatientsActions.Edit(newPatient));

@@ -103,10 +103,6 @@ router.get("/doctor-profile/:id", (req, res) => {
               success: true
             });
           });
-        // doctorsSchema.save(function (err, data) {
-        //     console.log('sdfsdf');
-        // });
-     // res.json(result); 
     });
   });
   router.post("/doctor-add", (req, res) => {
