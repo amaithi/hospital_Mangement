@@ -81,16 +81,17 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
   ngOnInit() {
     super.ngOnInit();
     this.hospitalId = JSON.parse(localStorage.getItem('user')).id;
-    this.store.select('patients').subscribe(patients => {
-      if (patients && patients.length) {
+    this.getData(this.API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
+    // this.store.select('patients').subscribe(patients => {
+    //   if (patients && patients.length) {
       
-        this.patients = patients;
+    //     this.patients = patients;
 
-        !this.pageData.loaded ? this.setLoaded() : null;
-      }else{
-        this.patients =[];
-      }
-    });
+    //     !this.pageData.loaded ? this.setLoaded() : null;
+    //   }else{
+    //     this.pageData.loaded =null;
+    //   }
+    // });
   }
 
   ngOnDestroy() {

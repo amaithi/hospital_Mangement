@@ -174,6 +174,10 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  specialists:[{
+    type: String,
+    default: "",
+  }],
   loginhistory: [
     {
       countryCode: {

@@ -7,6 +7,7 @@ const async = require("async");
 const nodemailer = require('nodemailer');
 const multer = require('multer');
 const doctors = require('../../models/doctors');
+const doctorsspecialists = require('../../models/doctorsspecialists');
 router.get('/test1', (req, res) => {
     res.json({
         statue: "success"
@@ -51,6 +52,14 @@ router.get('/doctors', (req, res) => {
             console.log(user, 'uesrezzzzzzz');
         }
     });
+});
+router.get('/doctorsspecialists', (req, res) => {
+  doctorsspecialists.find({}).then(user => {
+      if (user) {
+          return res.status(200).send(user);
+          console.log(user, 'uesrezzzzzzz');
+      }
+  });
 });
 router.get('/doctors/:id', (req, res) => {
   doctors.find({hospitalId:req.params.id}).then(user => {
