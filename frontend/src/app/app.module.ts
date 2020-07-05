@@ -21,6 +21,7 @@ import { DatepickerFormatsExampleComponent } from './datepicker-formats-example/
 // import { NewpaymentComponent } from './newpayment/newpayment.component';
  import { ToastrModule } from 'ngx-toastr';
  import { DatePipe } from '@angular/common';
+ 
 @NgModule({
   declarations: [
     AppComponent,

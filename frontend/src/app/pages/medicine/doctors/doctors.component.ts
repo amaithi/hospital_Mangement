@@ -68,7 +68,11 @@ export class PageDoctorsComponent extends BasePageComponent implements OnInit, O
     super.ngOnInit();
 
     this.getData(this.API_URL+"doctors/"+this.hospitalId, 'doctors', 'setLoaded');
-    this.getData('assets/data/doctors-specialists.json', 'specialists');
+
+    this.httpSv.getData(this.API_URL+'account-get/'+this.hospitalId).subscribe(response => {
+      this.specialists = response[0].specialists;
+    });
+    // this.getData('assets/data/doctors-specialists.json', 'specialists');
     this.getdoctors();
   }
   getdoctors(){

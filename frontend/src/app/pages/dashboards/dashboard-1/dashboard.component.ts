@@ -6,7 +6,6 @@ import { BasePageComponent } from '../../base-page';
 import { IAppState } from '../../../interfaces/app-state';
 import { HttpService } from '../../../services/http/http.service';
 import {ActivatedRoute, Router} from "@angular/router";
-// const this.API_URL = 'http://localhost:5001/api/';
 import { DatePipe } from '@angular/common';
 import { environment } from '../../../env';
 @Component({

@@ -1,4 +1,4 @@
-<div class="logo-wrap">
-  <h1>Prodoc</h1>
-  <!-- <img src="{{ src }}" alt="{{ alt }}" width="{{ width }}" height="{{ height }}" class="logo-img"> -->
-</div>
+<div class="logo-wrap" *ngIf="userData">
+  <img src="{{ userData.img }}" alt="{{ alt }}" width="{{ width }}" height="{{ height }}" class="logo-img">
+  <h1>{{userData.username}}</h1>
+ </div>

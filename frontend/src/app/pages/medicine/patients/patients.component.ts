@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit ,Inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import {ActivatedRoute, Router} from "@angular/router";
@@ -13,6 +13,7 @@ import * as PatientsActions from '../../../store/actions/patients.actions';
 import { TCModalService } from '../../../ui/services/modal/modal.service';
 import { DatePipe } from '@angular/common';
 import { environment } from '../../../env';
+import { DOCUMENT } from '@angular/common';
 @Component({
   selector: 'page-patients',
   templateUrl: './patients.component.html',
@@ -36,6 +37,7 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
     private modal: TCModalService,
     private router : Router,
     private datePipe:DatePipe,
+    @Inject(DOCUMENT) private _document: Document
   ) {
     super(store, httpSv);
 
@@ -178,6 +180,7 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
       let newPatient: IPatient = form.value;
       this.httpSv.updatePatient(this.API_URL+'patient-update',form.value).subscribe(response => {
         this.getData(this.API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
+        
       });
       console.log(newPatient);
       this.store.dispatch(new PatientsActions.Edit(newPatient));

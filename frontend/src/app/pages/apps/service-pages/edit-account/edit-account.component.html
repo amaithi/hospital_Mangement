@@ -1,14 +1,13 @@
 <div class="row justify-content-center" *ngIf="userData">
   <div class="col col-12 col-xl-8">
-
-
     
     <form
     [formGroup]="userForm"
       novalidate
       class="mb-4"
       (ngSubmit)="saveData(userForm)"
-    >
+    > 
+   
       <tc-form-group>
         <tc-form-label>Photo</tc-form-label>
         <input type="file" accept="image/*" (change)="onFileChanged($event)" #fileInput hidden>
@@ -57,6 +56,36 @@
         <tc-form-label>Owner Name</tc-form-label>
         <tc-input [placeholder]="'Owner Name'" formControlName="ownername"></tc-input>
       </tc-form-group>
+            <tc-form-group>
+              <!-- <select multiple formControlName="specialists">
+                <option disabled>Select Oppo Suits</option>
+                <option *ngFor="let suit of spealistDropDown" [ngValue]="suit.value">{{suit.value}}</option>
+              </select> -->
+
+
+              <tc-form-label>Specialists</tc-form-label>
+              <tc-select 
+                [placeholder]="'Select Specialists'"
+                [options]="spealistDropDown"
+                [selected]="selectedSpealist"
+                [multiple]="true"
+                formControlName="specialists"
+                [tcShape]="6"
+
+              ></tc-select>
+
+              <tc-form-label>Already Selected Specialists</tc-form-label>
+              <div *ngFor="let list of selectedSpealist;let i = index">
+                <span>
+                  {{list }}
+                  <button type="button" class="close" (click)="removeItem(i)" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </span>
+            </div>
+
+            </tc-form-group>
+            
       <tc-form-group>
         <tc-form-label>Phone number</tc-form-label>
         <tc-input [placeholder]="'Phone number'" formControlName="number"></tc-input>

@@ -67,7 +67,7 @@ export class LoginFormComponent extends BasePageComponent implements OnInit, OnD
         if(response.status == 200){
           localStorage.setItem('user', JSON.stringify(response.updatedata));
           this.notifyService.showSuccess('', response.message);
-          this.router.navigateByUrl('/vertical/default-dashboard');
+          this.router.navigateByUrl('/vertical/edit-account');
         }
       }, (err) => {
         this.notifyService.showError('', err.message);

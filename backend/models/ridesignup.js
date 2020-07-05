@@ -81,6 +81,10 @@ const UserSchema = new Schema({
     type: String,
     default: "",
   },
+  img: {
+    type: String,
+    default: "",
+  },
   otptime: {
     type: Date,
     default: "",
