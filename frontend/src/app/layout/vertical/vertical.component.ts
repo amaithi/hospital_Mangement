@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit,Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -17,7 +17,7 @@ import * as SettingsActions from '../../store/actions/app-settings.actions';
 import { DatePipe } from '@angular/common';
 import { AnyARecord } from 'dns';
 import { environment } from '../../../../src/app/env';
-
+import { DOCUMENT } from '@angular/common';
 @Component({
   selector: 'vertical-layout',
   templateUrl: './vertical.component.html',
@@ -42,7 +42,8 @@ export class VerticalLayoutComponent extends BaseLayoutComponent implements OnIn
     router: Router,
     elRef: ElementRef,
     private modal: TCModalService,
-    private datePipe :DatePipe
+    private datePipe :DatePipe,
+    @Inject(DOCUMENT) private document: Document
   ) {
     super(store, fb, httpSv, router, elRef);
 
@@ -80,6 +81,7 @@ export class VerticalLayoutComponent extends BaseLayoutComponent implements OnIn
   }
   // open modal window
   openModal<T>(body: Content<T>, header: Content<T> = null, footer: Content<T> = null, options: any = null) {
+    this.ngOnInit();
     this.initPatientForm();
 
     this.modal.open({
@@ -135,6 +137,7 @@ export class VerticalLayoutComponent extends BaseLayoutComponent implements OnIn
       this.httpSv.addPatient(this.API_URL+'patient-add/',newPatient).subscribe(response => {
         this.httpSv.getPatient(this.API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
           this.patientcount = Number(response[response.length-1].id)+1;
+          this.document.location.reload();
         });
       });
       this.store.dispatch(new PatientsActions.Add(newPatient));

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit ,Inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, Inject  } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import {ActivatedRoute, Router} from "@angular/router";
@@ -14,6 +14,8 @@ import { TCModalService } from '../../../ui/services/modal/modal.service';
 import { DatePipe } from '@angular/common';
 import { environment } from '../../../env';
 import { DOCUMENT } from '@angular/common';
+// import { IMyOptions } from 'ng-uikit-pro-standard';
+import * as $ from 'jquery'; 
 @Component({
   selector: 'page-patients',
   templateUrl: './patients.component.html',
@@ -29,15 +31,16 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
   patientId:  any;
   recordId:any;
   hospitalId:any;
+  dateMode:any;
   public API_URL:any = environment.backend;
   constructor(
+    @Inject(DOCUMENT) private document: Document,
     store: Store<IAppState>,
     httpSv: HttpService,
     private fb: FormBuilder,
     private modal: TCModalService,
     private router : Router,
     private datePipe:DatePipe,
-    @Inject(DOCUMENT) private _document: Document
   ) {
     super(store, httpSv);
 
@@ -77,21 +80,34 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
     this.defaultAvatar = 'assets/content/anonymous-400.jpg';
     this.currentAvatar = this.defaultAvatar;
   }
+  // public myDatePickerOptions: IMyOptions = {
+  //   // Your options
+  //   };
 
+  // $(function () {
+    
+// });
+onChange(result: Date): void { }
+
+  onOk(result: Date): void { }
+
+  handleDateOpenChange(open: boolean): void {
+    if (open) {
+      this.dateMode = 'date';
+    }
+  }
+
+  handleDatePanelChange(mode: string): void { }
   ngOnInit() {
     super.ngOnInit();
     this.hospitalId = JSON.parse(localStorage.getItem('user')).id;
-    this.getData(this.API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
-    // this.store.select('patients').subscribe(patients => {
-    //   if (patients && patients.length) {
-      
-    //     this.patients = patients;
-
-    //     !this.pageData.loaded ? this.setLoaded() : null;
-    //   }else{
-    //     this.pageData.loaded =null;
-    //   }
-    // });
+    this.getData(this.API_URL+'patients/'+this.hospitalId, 'patients', 'setLoaded');
+    this.getData(this.API_URL+'doctors/'+this.hospitalId, 'doctors', 'setLoaded');
+    // this.getData(this.API_URL+'patient-get', 'patients', 'setLoaded');
+    this.httpSv.getpayment(this.API_URL+'patient-get/'+this.hospitalId).subscribe(response => {
+      this.patients = response;
+     });
+  
   }
 
   ngOnDestroy() {
@@ -99,17 +115,17 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
   }
 
   // delete patient
-  remove(id: string) {
+  remove(id) {
     // this.store.dispatch(new PatientsActions.Delete(id));
-    this.httpSv.updatePatient(this.API_URL+'patient-delete/',{_id:id}).subscribe(response => {
-      this.getData(this.API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
+    this.httpSv.updatePatient(this.API_URL+'patient-delete/',{_id:id._id}).subscribe(response => {
+      this.document.location.reload();
     });
     
   }
-  profile(id: string) {
+  profile(id) {
     // this.store.dispatch(new PatientsActions.Delete(id));
-    this.httpSv.updatePatient(this.API_URL+'patient-delete/',{_id:id}).subscribe(response => {
-      this.getData(this.API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
+    this.httpSv.updatePatient(this.API_URL+'patient-delete/',{_id:id._id}).subscribe(response => {
+       this.getData(this.API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
     });
     
   }
@@ -181,7 +197,6 @@ export class PagePatientsComponent extends BasePageComponent implements OnInit, 
       let newPatient: IPatient = form.value;
       this.httpSv.updatePatient(this.API_URL+'patient-update',form.value).subscribe(response => {
         this.getData(this.API_URL+"patients/"+this.hospitalId, 'patients', 'setPatients');
-        
       });
       console.log(newPatient);
       this.store.dispatch(new PatientsActions.Edit(newPatient));
