@@ -108,14 +108,14 @@ export class PageEditAccountComponent extends BasePageComponent implements OnIni
    // this.hospitalId ='';
     this.httpSv.getData(this.API_URL+'account-get/'+this.hospitalId).subscribe(response => {
       this.userData= response[0];
-      this.userForm.get('alternumber').patchValue(this.userData.alternumber);
-      this.userForm.get('ownername').patchValue(this.userData.ownername);
-      this.userForm.get('number').patchValue(this.userData.number);
-      this.userForm.get('address').patchValue(this.userData.address);
-      this.userForm.get('username').patchValue(this.userData.username);
-      this.userForm.get('img').patchValue(this.userData.img);
-      this.userForm.get('specialists').patchValue(this.userData.specialists);
-      this.userForm.controls.specialists.setValue(this.userData.specialists) 
+      this.userForm.get('alternumber').patchValue(this.userData.alternumber != undefined ? '' :this.userData.alternumber );
+      this.userForm.get('ownername').patchValue(this.userData.ownername != undefined ? '' :this.userData.ownername );
+      this.userForm.get('number').patchValue(this.userData.number != undefined ? '' :this.userData.number );
+      this.userForm.get('address').patchValue(this.userData.address != undefined ? '' :this.userData.address );
+      this.userForm.get('username').patchValue(this.userData.username != undefined ? '' :this.userData.username );
+      this.userForm.get('img').patchValue(this.userData.img != undefined ? '' :this.userData.img );
+      this.userForm.get('specialists').patchValue(this.userData.specialists != undefined ? '' :this.userData.specialists );
+      this.userForm.controls.specialists.setValue(this.userData.specialists != undefined ? '' :this.userData.specialists ) 
       this.currentAvatar = this.userData.img ? this.userData.img :  this.currentAvatar;
       this.selectedSpealist = this.userData.specialists
     });

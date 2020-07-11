@@ -167,9 +167,9 @@ onChange(result: Date): void { }
       req.hospitalId = JSON.parse(localStorage.getItem('user')).id;
       this.httpSv.addPayment(this.API_URL+'payments-add/',req).subscribe(response => {
         if(response.status == 200){
-          this.httpSv.sendpaymentsms(this.API_URL+'payment-sms/',req).subscribe(res => {
-            console.log(res)
-          });
+          // this.httpSv.sendpaymentsms(this.API_URL+'payment-sms/',req).subscribe(res => {
+          //   console.log(res)
+          // });
         }
         this.payments.unshift(form.value);
         let newTableData = JSON.parse(JSON.stringify(this.payments));

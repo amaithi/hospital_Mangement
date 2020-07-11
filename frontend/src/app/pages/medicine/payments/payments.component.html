@@ -98,7 +98,7 @@
   <ng-template #modalFooter>
     <div class="actions justify-content-between">
       <button tc-button [type]="'button'" [view]="'error'" (click)="closeModal()">Cancel</button>
-      <button tc-button [view]="'info'"  (click)="addPayment(paymentForm)">
+      <button tc-button [view]="'info'" [disabled]="paymentForm.invalid" (click)="addPayment(paymentForm)">
         Add payment
       </button>
     </div>
